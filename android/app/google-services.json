@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "62024202340",
+    "project_id": "eltayebtrans-4f9b2",
+    "storage_bucket": "eltayebtrans-4f9b2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62024202340:android:851fc40268750165fc8771",
+        "android_client_info": {
+          "package_name": "com.ao307.eltyp_delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCY7gP1r__uBEIrOXliJngw4s7NJHFbXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
