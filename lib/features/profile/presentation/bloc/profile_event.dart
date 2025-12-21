@@ -11,10 +11,26 @@ class GetProfileEvent extends ProfileEvent {
   List<Object> get props => [];
 }
 
+class GetEmployeeProfileEvent extends ProfileEvent {
+  const GetEmployeeProfileEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class UpdateProfileEvent extends ProfileEvent {
   const UpdateProfileEvent(this.parameters);
 
   final UpdateProfileParams parameters;
+
+  @override
+  List<Object> get props => [parameters];
+}
+
+class UpdatePasswordEvent extends ProfileEvent {
+  const UpdatePasswordEvent(this.parameters);
+
+  final UpdatePasswordParams parameters;
 
   @override
   List<Object> get props => [parameters];

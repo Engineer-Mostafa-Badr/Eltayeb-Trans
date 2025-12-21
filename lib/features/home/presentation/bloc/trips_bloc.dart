@@ -10,16 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/get_trip_details_params.dart';
+import '../../domain/entities/get_trips_params.dart';
 import '../../domain/use_cases/get_trip_details_use_case.dart';
 
 part 'trips_event.dart';
 part 'trips_state.dart';
 
 class TripsBloc extends Bloc<TripsEvent, TripsState> {
-  TripsBloc(
-      this.getTripsUseCase,
-      this.getTripDetailsUseCase,
-      ) : super(const TripsState()) {
+  TripsBloc(this.getTripsUseCase, this.getTripDetailsUseCase)
+    : super(const TripsState()) {
     tripsScrollController = ScrollController();
     on<GetTripsEvent>(_getTrips);
     on<GetTripDetailsEvent>(_getTripDetails);
@@ -33,15 +32,15 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
   late final ScrollController tripsScrollController;
 
   FutureOr<void> _getTrips(
-      GetTripsEvent event,
-      Emitter<TripsState> emit,
-      ) async {
+    GetTripsEvent event,
+    Emitter<TripsState> emit,
+  ) async {
     emit(state.copyWith(requestUtilsState: RequestState.loading));
 
     final result = await getTripsUseCase(event.params);
 
     result.fold(
-          (failure) {
+      (failure) {
         emit(
           state.copyWith(
             requestUtilsState: RequestState.error,
@@ -52,7 +51,7 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
           ),
         );
       },
-          (data) {
+      (data) {
         emit(
           state.copyWith(
             requestUtilsState: RequestState.loaded,
@@ -64,15 +63,15 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
   }
 
   FutureOr<void> _getTripDetails(
-      GetTripDetailsEvent event,
-      Emitter<TripsState> emit,
-      ) async {
+    GetTripDetailsEvent event,
+    Emitter<TripsState> emit,
+  ) async {
     emit(state.copyWith(tripDetailsRequestState: RequestState.loading));
 
     final result = await getTripDetailsUseCase(event.params);
 
     result.fold(
-          (failure) {
+      (failure) {
         emit(
           state.copyWith(
             tripDetailsRequestState: RequestState.error,
@@ -83,7 +82,7 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
           ),
         );
       },
-          (data) {
+      (data) {
         emit(
           state.copyWith(
             tripDetailsRequestState: RequestState.loaded,
@@ -95,9 +94,9 @@ class TripsBloc extends Bloc<TripsEvent, TripsState> {
   }
 
   FutureOr<void> _makeCounterNotificationZero(
-      MakeCounterNotificationZeroEvent event,
-      Emitter<TripsState> emit,
-      ) async {}
+    MakeCounterNotificationZeroEvent event,
+    Emitter<TripsState> emit,
+  ) async {}
 
   @override
   Future<void> close() {

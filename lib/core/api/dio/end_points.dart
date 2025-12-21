@@ -21,8 +21,11 @@ class EndPoints {
 
   static String showNotifications(int id) => '/auth/notifications/$id';
   static const String trips = '/driver/trips';
+  static const String employeeTrips = '/employee/trips';
   static const String generateNewPayLink = '/pay';
   static const String categories = '/categories';
+  static const String drivers = '/employee/lookup/drivers';
+  static const String trucks = '/employee/lookup/trucks';
 
   /// auth
   static const String register = '/auth/register';
@@ -31,7 +34,9 @@ class EndPoints {
   static const String logout = '/logout';
   static const String deleteAccount = '/delete-account';
   static const String profile = '/driver/profile';
-  static const String updateProfile = '/auth/update-profile';
+  static const String employeeProfile = '/employee/profile';
+  static const String updateProfile = '/employee/profile/update';
+  static const String updatePassword = '/employee/profile/update-password';
   static const String myInvoices = '/invoices';
   static const String cars = '/cars';
   static const String resendVerificationEmail = '/resend-code';

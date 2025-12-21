@@ -6,7 +6,9 @@ import 'package:eltyp_delivery/core/services/notifications_handler/firebase_noti
 import 'package:eltyp_delivery/core/utils/delay_login.dart';
 import 'package:eltyp_delivery/core/utils/most_used_functions.dart';
 import 'package:eltyp_delivery/core/utils/responsive_helper.dart';
+import 'package:eltyp_delivery/features/home/presentation/bloc/drivers_bloc.dart';
 import 'package:eltyp_delivery/features/home/presentation/bloc/trips_bloc.dart';
+import 'package:eltyp_delivery/features/home/presentation/bloc/trucks_bloc.dart';
 import 'package:eltyp_delivery/features/injection_container.dart' as di;
 import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_page.dart';
 import 'package:eltyp_delivery/features/profile/presentation/bloc/profile_bloc.dart';
@@ -30,8 +32,13 @@ class MyApp extends StatelessWidget {
         BlocProvider<MainAppCubit>(
           create: (context) => di.sl<MainAppCubit>()..checkInternetConnection(),
         ),
-        BlocProvider(create: (context) => di.sl<ProfileBloc>()..add(const GetProfileEvent())),
+        BlocProvider(
+          create: (context) =>
+              di.sl<ProfileBloc>()..add(const GetProfileEvent()),
+        ),
         BlocProvider(create: (context) => di.sl<TripsBloc>()),
+        BlocProvider(create: (context) => di.sl<DriversBloc>()),
+        BlocProvider(create: (context) => di.sl<TrucksBloc>()),
       ],
       child: FirebaseNotificationsHandlerPlus(
         defaultNavigatorKey: NavigatorKey.navigatorKey,
@@ -58,7 +65,9 @@ class MyApp extends StatelessWidget {
         child: ScreenUtilInit(
           minTextAdapt: true,
           splitScreenMode: true,
-          designSize: ResponsiveHelper.isTablet(context) || ResponsiveHelper.isDesktop(context)
+          designSize:
+              ResponsiveHelper.isTablet(context) ||
+                  ResponsiveHelper.isDesktop(context)
               ? const Size(768, 1024)
               : const Size(414, 896),
           builder: (context, child) {
@@ -72,7 +81,9 @@ class MyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 theme: lightTheme(context),
                 darkTheme: darkTheme(context),
-                themeMode: di.sl<MainAppCubit>().isDark ? ThemeMode.dark : ThemeMode.light,
+                themeMode: di.sl<MainAppCubit>().isDark
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
                 home: BlocBuilder<MainAppCubit, MainAppCubitState>(
                   builder: (context, state) {
                     return Center(child: child);

@@ -4,6 +4,8 @@ import 'package:eltyp_delivery/features/profile/data/data_sources/remote/remote_
 import 'package:eltyp_delivery/features/profile/data/repositories/implementation_repositories.dart';
 import 'package:eltyp_delivery/features/profile/domain/repositories/base_profile_repo.dart';
 import 'package:eltyp_delivery/features/profile/domain/use_cases/get_profile_usecase.dart';
+import 'package:eltyp_delivery/features/profile/domain/use_cases/get_employee_profile_usecase.dart';
+import 'package:eltyp_delivery/features/profile/domain/use_cases/update_password_usecase.dart';
 import 'package:eltyp_delivery/features/profile/domain/use_cases/update_profile_usecase.dart';
 import 'package:eltyp_delivery/features/profile/presentation/bloc/profile_bloc.dart';
 
@@ -12,8 +14,14 @@ Future<void> getProfileModule() async {
   sl.registerLazySingleton<GetProfileUseCase>(
     () => GetProfileUseCase(sl<BaseProfileRepository>()),
   );
+  sl.registerLazySingleton<GetEmployeeProfileUseCase>(
+    () => GetEmployeeProfileUseCase(sl<BaseProfileRepository>()),
+  );
   sl.registerLazySingleton<UpdateProfileUseCase>(
     () => UpdateProfileUseCase(sl<BaseProfileRepository>()),
+  );
+  sl.registerLazySingleton<UpdatePasswordUseCase>(
+    () => UpdatePasswordUseCase(sl<BaseProfileRepository>()),
   );
 
   /// Repositories
@@ -30,7 +38,9 @@ Future<void> getProfileModule() async {
   sl.registerFactory<ProfileBloc>(
     () => ProfileBloc(
       sl<GetProfileUseCase>(),
+      sl<GetEmployeeProfileUseCase>(),
       sl<UpdateProfileUseCase>(),
+      sl<UpdatePasswordUseCase>(),
     ),
   );
 }

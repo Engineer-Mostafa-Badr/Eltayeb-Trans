@@ -19,5 +19,7 @@ Future<void> getMedalsModule() async {
   );
 
   /// Data Sources
-  sl.registerLazySingleton<MedalsRemoteDataSource>(() => MedalsRemoteDataSource(sl<ApiConsumer>()));
+  sl.registerLazySingleton<MedalsRemoteDataSource>(
+    () => MedalsRemoteDataSource(sl<ApiConsumer>()),
+  );
 }

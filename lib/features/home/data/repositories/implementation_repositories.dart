@@ -4,8 +4,11 @@ import 'package:eltyp_delivery/core/api/error/exceptions.dart';
 import 'package:eltyp_delivery/core/api/error/failures.dart';
 import 'package:eltyp_delivery/core/usecase/base_use_case.dart';
 import 'package:eltyp_delivery/features/home/data/data_sources/remote/remote_data_source.dart';
+import 'package:eltyp_delivery/features/home/data/models/drivers_model.dart';
 import 'package:eltyp_delivery/features/home/data/models/trips_model.dart';
+import 'package:eltyp_delivery/features/home/data/models/trucks_model.dart';
 import 'package:eltyp_delivery/features/home/domain/entities/get_trip_details_params.dart';
+import 'package:eltyp_delivery/features/home/domain/entities/get_trips_params.dart';
 import 'package:eltyp_delivery/features/home/domain/repositories/base_trips_repo.dart';
 
 class HomeRepositoryImpl implements BaseTripsRepository {
@@ -14,7 +17,9 @@ class HomeRepositoryImpl implements BaseTripsRepository {
   HomeRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<Either<Failure, BaseResponse<TripsModel>>> getHomeUtils(NoParameters params) async {
+  Future<Either<Failure, BaseResponse<TripsModel>>> getHomeUtils(
+    GetTripsParams params,
+  ) async {
     try {
       final response = await remoteDataSource.getTrips(params);
       return Right(response);
@@ -29,6 +34,30 @@ class HomeRepositoryImpl implements BaseTripsRepository {
   ) async {
     try {
       final response = await remoteDataSource.getTripDetails(params);
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse<DriversModel>>> getDrivers(
+    NoParameters params,
+  ) async {
+    try {
+      final response = await remoteDataSource.getDrivers(params);
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse<TrucksModel>>> getTrucks(
+    NoParameters params,
+  ) async {
+    try {
+      final response = await remoteDataSource.getTrucks(params);
       return Right(response);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));

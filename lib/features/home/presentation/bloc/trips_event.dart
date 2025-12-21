@@ -8,9 +8,9 @@ sealed class TripsEvent extends Equatable {
 }
 
 class GetTripsEvent extends TripsEvent {
-  final NoParameters params;
+  final GetTripsParams params;
 
-  const GetTripsEvent({this.params = const NoParameters()});
+  const GetTripsEvent({this.params = const GetTripsParams()});
 
   @override
   List<Object?> get props => [params];

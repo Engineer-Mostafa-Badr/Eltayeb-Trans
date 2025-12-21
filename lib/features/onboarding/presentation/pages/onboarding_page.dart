@@ -6,10 +6,10 @@ import 'package:eltyp_delivery/core/storage/main_hive_box.dart';
 import 'package:eltyp_delivery/core/utils/app_const.dart';
 import 'package:eltyp_delivery/features/injection_container.dart' as di;
 import 'package:eltyp_delivery/features/onboarding/presentation/constants/onboarding_constants.dart';
+import 'package:eltyp_delivery/features/auth/presentation/pages/login_representative_page.dart';
 import 'package:eltyp_delivery/features/onboarding/presentation/widgets/onboarding_action_buttons.dart';
 import 'package:eltyp_delivery/features/onboarding/presentation/widgets/onboarding_page_indicator.dart';
 import 'package:eltyp_delivery/features/onboarding/presentation/widgets/onboarding_page_view.dart';
-import '../../../auth/presentation/pages/login_representative_page.dart';
 
 /// Onboarding page that displays introduction screens for first-time users
 class OnBoardingPage extends StatefulWidget {
