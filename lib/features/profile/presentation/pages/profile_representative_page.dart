@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eltyp_delivery/core/enum/enums.dart';
 import 'package:eltyp_delivery/features/auth/data/models/user_model.dart';
 import 'package:eltyp_delivery/features/profile/presentation/bloc/profile_bloc.dart';
-import 'package:eltyp_delivery/features/profile/domain/entities/update_profile_params.dart';
+// import 'package:eltyp_delivery/features/profile/domain/entities/update_profile_params.dart'; // Commented until edit functionality is implemented
 import 'package:eltyp_delivery/features/profile/presentation/pages/change_password_page.dart';
 
 class ProfileRepresentativePage extends StatefulWidget {
@@ -401,7 +401,7 @@ class _ProfileRepresentativePageState extends State<ProfileRepresentativePage> {
 
   Widget _buildActionButtons(ProfileState state) {
     final isUpdating = state.updateProfileState == RequestState.loading;
-    final userData = state.getEmployeeProfileResponse.data;
+    // final userData = state.getEmployeeProfileResponse.data; // Commented until edit functionality is implemented
 
     return Column(
       children: [
@@ -409,27 +409,28 @@ class _ProfileRepresentativePageState extends State<ProfileRepresentativePage> {
           width: double.infinity,
           height: 50,
           child: ElevatedButton(
-            onPressed: isUpdating || userData == null
-                ? null
-                : () {
-                    // Get updated phone value
-                    final updatedPhone = _phoneController.text.trim();
+            onPressed: null, // Disabled until edit functionality is implemented
+            // isUpdating || userData == null
+            //     ? null
+            //     : () {
+            //         // Get updated phone value
+            //         final updatedPhone = _phoneController.text.trim();
 
-                    // Create update parameters
-                    final updateParams = UpdateProfileParams(
-                      phone: updatedPhone.isNotEmpty
-                          ? updatedPhone
-                          : userData.phone,
-                      name: userData.name,
-                      email: userData.email,
-                      image: userData.image,
-                    );
+            //         // Create update parameters
+            //         final updateParams = UpdateProfileParams(
+            //           phone: updatedPhone.isNotEmpty
+            //               ? updatedPhone
+            //               : userData.phone,
+            //           name: userData.name,
+            //           email: userData.email,
+            //           image: userData.image,
+            //         );
 
-                    // Trigger update event
-                    ProfileBloc.get(
-                      context,
-                    ).add(UpdateProfileEvent(updateParams));
-                  },
+            //         // Trigger update event
+            //         ProfileBloc.get(
+            //           context,
+            //         ).add(UpdateProfileEvent(updateParams));
+            //       },
             style: ElevatedButton.styleFrom(
               backgroundColor: kPrimaryRed,
               shape: RoundedRectangleBorder(

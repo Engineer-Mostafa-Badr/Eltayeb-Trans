@@ -36,6 +36,11 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     NotificationsFetchEvent event,
     Emitter<NotificationsState> emit,
   ) async {
+    // Reset data if filter changed or page is 1
+    final shouldResetData =
+        event.params.page == 1 ||
+        event.params.filter != state.getNotificationsParameters.filter;
+
     emit(state.copyWith(getNotificationsState: RequestState.loading));
 
     final result = await getNotificationsUseCase(event.params);
@@ -56,13 +61,17 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
           state.copyWith(
             getNotificationsState: RequestState.loaded,
             getNotificationsResponse: data.copyWith(
-              data:
-                  state.getNotificationsResponse.data != null &&
-                      event.params.page > 1
+              data: shouldResetData
+                  ? data.data
+                  : state.getNotificationsResponse.data != null &&
+                        event.params.page > 1 &&
+                        event.params.filter ==
+                            state.getNotificationsParameters.filter
                   ? [...state.getNotificationsResponse.data!, ...data.data!]
                   : data.data,
               pagination: data.pagination,
             ),
+            getNotificationsParameters: event.params,
           ),
         );
       },

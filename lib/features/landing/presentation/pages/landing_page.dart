@@ -9,7 +9,7 @@ import 'package:eltyp_delivery/core/utils/app_const.dart';
 import 'package:eltyp_delivery/core/utils/app_sizes.dart';
 import 'package:eltyp_delivery/features/expenses/presentation/pages/my_expenses_page.dart';
 import 'package:eltyp_delivery/features/home/presentation/bloc/trips_bloc.dart';
-import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_representative_page.dart';
 import 'package:eltyp_delivery/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:eltyp_delivery/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +30,13 @@ class _LandingPageState extends State<LandingPage> {
   int _selectedIndex = 0;
 
   final List _pages = const [
-    [AssetImagesPath.track,  TripsPage(), 'tracks'],
+    [AssetImagesPath.track, TripsPage(), 'tracks'],
     [AssetImagesPath.wallet, MyExpensesPage(), 'expenses'],
-    [AssetImagesPath.notification, NotificationsPage(), 'notification'],
+    [
+      AssetImagesPath.notification,
+      NotificationsRepresentativePage(),
+      'notification',
+    ],
     [AssetImagesPath.profile, ProfilePage(), 'profile'],
   ];
 
@@ -63,7 +67,9 @@ class _LandingPageState extends State<LandingPage> {
           body: _pages[_selectedIndex][1],
           extendBody: true,
           bottomNavigationBar: ContainerForBottomNavButtons(
-            padding: const EdgeInsetsDirectional.only(top: AppPadding.smallPadding),
+            padding: const EdgeInsetsDirectional.only(
+              top: AppPadding.smallPadding,
+            ),
             child: BottomNavigationBar(
               currentIndex: _selectedIndex,
               elevation: 0,
@@ -81,11 +87,20 @@ class _LandingPageState extends State<LandingPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: AssetSvgImage(_pages[index][0], color: index == _selectedIndex ? AppColors.cDarkBlueColor : null),
+                        child: AssetSvgImage(
+                          _pages[index][0],
+                          color: index == _selectedIndex
+                              ? AppColors.cDarkBlueColor
+                              : null,
+                        ),
                       ),
                       Text(
                         '${_pages[index][2]}'.tr(),
-                        style: AppStyles.title500.copyWith(color: index == _selectedIndex ? AppColors.cDarkBlueColor : AppColors.cTextSubtitleLight),
+                        style: AppStyles.title500.copyWith(
+                          color: index == _selectedIndex
+                              ? AppColors.cDarkBlueColor
+                              : AppColors.cTextSubtitleLight,
+                        ),
                       ),
                     ],
                   ),

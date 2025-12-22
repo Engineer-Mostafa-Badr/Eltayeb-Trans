@@ -7,12 +7,22 @@ import 'package:eltyp_delivery/features/home/domain/entities/get_trips_params.da
 import 'package:eltyp_delivery/features/home/presentation/bloc/trips_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'change_driver_page.dart';
 import 'truck_details_page.dart';
+import 'trips_details_page.dart';
+import 'adding_custodyrecord_page.dart';
+import '../../../../config/themes/colors.dart';
+import '../../../../core/components/images/custom_asset_svg_image.dart';
+import '../../../../core/res/app_images.dart';
+import '../../../../core/utils/app_const.dart';
+import '../../../profile/presentation/bloc/profile_bloc.dart';
 
 // 1. الشاشة الرئيسية التي تحتوي على البوتوم ناف بار والتحكم في التنقل
 class TripsRepresentativePage extends StatefulWidget {
-  const TripsRepresentativePage({super.key});
+  final int? initialIndex;
+
+  const TripsRepresentativePage({super.key, this.initialIndex});
 
   @override
   State<TripsRepresentativePage> createState() =>
@@ -20,7 +30,13 @@ class TripsRepresentativePage extends StatefulWidget {
 }
 
 class _TripsRepresentativePageState extends State<TripsRepresentativePage> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex ?? 0;
+  }
 
   // قائمة الصفحات التي سيتم التنقل بينها
   final List<Widget> _pages = [
@@ -236,158 +252,232 @@ class _TripsPageContentState extends State<TripsPageContent> {
     );
   }
 }
-
-// ---------------------------------------------------------
-// 3. صفحات إضافية (وهمية) للإشعارات والبروفايل للتجربة
-// ---------------------------------------------------------
-
-class NotificationsPage extends StatelessWidget {
-  const NotificationsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'صفحة الإشعارات',
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey,
-        ),
-      ),
-    );
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'صفحة البروفايل',
-        style: TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey,
-        ),
-      ),
-    );
-  }
-}
-
 // ---------------------------------------------------------
 // --- WIDGETS & COMPONENTS (نفس الكود السابق بدون تغيير) ---
 // ---------------------------------------------------------
 
-class CustomHeader extends StatelessWidget {
+class CustomHeader extends StatefulWidget {
   const CustomHeader({super.key});
+
+  @override
+  State<CustomHeader> createState() => _CustomHeaderState();
+}
+
+class _CustomHeaderState extends State<CustomHeader> {
+  String? _selectedGovernorate;
+
+  final List<String> _governorates = [
+    'القاهرة',
+    'الإسكندرية',
+    'الجيزة',
+    'بورسعيد',
+    'السويس',
+    'طنطا',
+    'أسيوط',
+    'الأقصر',
+    'أسوان',
+    'دمياط',
+    'المنيا',
+    'بنها',
+    'قنا',
+    'سوهاج',
+    'دمنهور',
+    'الغربيه',
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.grey[100],
-            radius: 20,
-            child: const Icon(Icons.person_outline, color: Color(0xFF6B1D1D)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.local_shipping,
-                      color: Color(0xFF6B1D1D),
-                      size: 20,
-                    ),
-                    SizedBox(width: 4),
-                    Text(
-                      'ELTAYEB',
-                      style: TextStyle(
-                        color: Color(0xFF6B1D1D),
-                        fontWeight: FontWeight.w900,
-                        fontSize: 16,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 2,
-                  width: 40,
-                  color: const Color(0xFF6B1D1D),
-                  margin: const EdgeInsets.only(top: 2),
-                ),
-              ],
-            ),
-          ),
-          Row(
+        ],
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      child: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, profileState) {
+          final notificationCount =
+              profileState.getProfileResponse.data?.notificationsCount ??
+              AppConst.user?.notificationsCount ??
+              0;
+          return Stack(
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                child: Row(
-                  children: [
-                    ClipOval(
-                      child: Container(
-                        width: 20,
-                        height: 20,
-                        color: Colors.red,
-                        alignment: Alignment.center,
-                        child: const Text(
-                          '🇪🇬',
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    const Text(
-                      'AR',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+              // Logo in center (absolute position)
+              Center(
+                child: SizedBox(
+                  height: 50.h,
+                  width: 200.w,
+                  child: Image.asset('assets/images/app_logo.png'),
                 ),
               ),
-              const SizedBox(width: 12),
-              Stack(
-                clipBehavior: Clip.none,
+              // Left and right sides
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(Icons.notifications_none_outlined, size: 28),
-                  Positioned(
-                    top: -2,
-                    left: -2,
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF6B1D1D),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Text(
-                        '7',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                  // Left side: Notification icon + Location dropdown
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Notification icon with badge
+                      GestureDetector(
+                        onTap: () {
+                          context.navigateToPage(
+                            const ProfileRepresentativePage(),
+                          );
+                        },
+                        child: CircleAvatar(
+                          radius: 22.r,
+                          backgroundColor: Colors.grey[100],
+                          child: CustomAssetSvgImage(
+                            AssetImagesPath.PersonIconSvg,
+                            color: AppColors.cPrimary,
+                            height: 20.h,
+                          ),
                         ),
                       ),
+
+                      SizedBox(width: 5.w),
+                      // Location icon with dropdown - horizontal layout
+                      PopupMenuButton<String>(
+                        offset: const Offset(0, 50),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+
+                          children: [
+                            // Location icon first
+                            Container(
+                              padding: EdgeInsets.only(right: 15.r, left: 4.r),
+
+                              child: CustomAssetSvgImage(
+                                AssetImagesPath.LocationSvg,
+                                height: 16.h,
+                              ),
+                            ),
+                            // Governorate name next to location icon
+                            Padding(
+                              padding: EdgeInsets.only(top: 7.h),
+                              child: Text(
+                                _selectedGovernorate ?? 'الغربيه',
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: _selectedGovernorate != null
+                                      ? Colors.black
+                                      : Colors.grey.shade600,
+                                  fontWeight: _selectedGovernorate != null
+                                      ? FontWeight.w600
+                                      : FontWeight.normal,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            SizedBox(width: 1.w),
+                            // Dropdown arrow icon last
+                            Padding(
+                              padding: EdgeInsets.only(top: 5.h),
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 16.sp,
+                                color: AppColors.cPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        itemBuilder: (BuildContext context) {
+                          return _governorates.map((String governorate) {
+                            return PopupMenuItem<String>(
+                              value: governorate,
+                              child: Text(
+                                governorate,
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: _selectedGovernorate == governorate
+                                      ? AppColors.cPrimary
+                                      : Colors.black,
+                                  fontWeight:
+                                      _selectedGovernorate == governorate
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
+                              ),
+                            );
+                          }).toList();
+                        },
+                        onSelected: (String value) {
+                          setState(() {
+                            _selectedGovernorate = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  // Right side: Profile icon
+                  GestureDetector(
+                    onTap: () {
+                      TripsBloc.get(
+                        context,
+                      ).add(const MakeCounterNotificationZeroEvent());
+                      ProfileBloc.get(
+                        context,
+                      ).add(const UpdateCounterNotificationEvent(isZero: true));
+                      context.navigateToPage(
+                        const NotificationsRepresentativePage(),
+                      );
+                    },
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: AppColors.cPinColor,
+                          radius: 20.r,
+                          child: CustomAssetSvgImage(
+                            AssetImagesPath.Notification1Svg,
+                            color: AppColors.cPrimary,
+                            height: 18.h,
+                          ),
+                        ),
+                        if (notificationCount > 0)
+                          Positioned(
+                            top: -2,
+                            right: -2,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
+                                color: Color(0xFF9B1B1B),
+                                shape: BoxShape.circle,
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 18,
+                                minHeight: 18,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  notificationCount > 9
+                                      ? '9+'
+                                      : notificationCount.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -439,33 +529,6 @@ class _FilterAndSearchSectionState extends State<FilterAndSearchSection> {
       children: [
         Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.calendar_today_outlined, size: 20),
-                color: const Color(0xFF6B1D1D),
-                onPressed: () async {
-                  // يمكن إضافة date picker هنا
-                  final DateTimeRange? picked = await showDateRangePicker(
-                    context: context,
-                    firstDate: DateTime(2020),
-                    lastDate: DateTime(2030),
-                    locale: const Locale('ar', 'EG'),
-                  );
-                  if (picked != null) {
-                    widget.onDateRangeSelected?.call(
-                      picked.start.toIso8601String().split('T')[0],
-                      picked.end.toIso8601String().split('T')[0],
-                    );
-                  }
-                },
-              ),
-            ),
-            const SizedBox(width: 12),
             Expanded(
               child: GestureDetector(
                 onTap: () {
@@ -495,30 +558,79 @@ class _FilterAndSearchSectionState extends State<FilterAndSearchSection> {
                   );
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  height: 48,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
+                  ),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(color: Colors.grey.shade300, width: 1),
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        statusOptions.firstWhere(
-                          (s) => statusMap[s] == widget.selectedStatus,
-                          orElse: () => 'الكل',
+                      Expanded(
+                        child: Text(
+                          statusOptions.firstWhere(
+                            (s) => statusMap[s] == widget.selectedStatus,
+                            orElse: () => 'الكل',
+                          ),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                        style: const TextStyle(fontSize: 14),
                       ),
                       const Icon(
                         Icons.keyboard_arrow_down,
                         color: Color(0xFF6B1D1D),
+                        size: 20,
                       ),
                     ],
                   ),
                 ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300, width: 1),
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.calendar_today_outlined, size: 20),
+                color: const Color(0xFF6B1D1D),
+                onPressed: () async {
+                  final DateTimeRange? picked = await showDateRangePicker(
+                    context: context,
+                    firstDate: DateTime(2020),
+                    lastDate: DateTime(2030),
+                    locale: const Locale('ar', 'EG'),
+                  );
+                  if (picked != null) {
+                    widget.onDateRangeSelected?.call(
+                      picked.start.toIso8601String().split('T')[0],
+                      picked.end.toIso8601String().split('T')[0],
+                    );
+                  }
+                },
               ),
             ),
           ],
@@ -561,125 +673,175 @@ class TripCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'رحلة رقم ${trip.id}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF6B1D1D),
-                ),
-              ),
-              _buildStatusBadge(trip.status),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Text(
-                trip.fromCity.name,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF2C3E50),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 16,
-                  color: Color(0xFF6B1D1D),
-                ),
-              ),
-              Text(
-                trip.toCity.name,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF2C3E50),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(
-            trip.date,
-            style: TextStyle(fontSize: 13, color: Colors.grey[500]),
-          ),
-          const SizedBox(height: 16),
-          const Divider(height: 1, color: Color(0xFFEEEEEE)),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 40,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      context.navigateToPageWithClearStack(
-                        const ChangeDriverPage(),
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Color(0xFF6B1D1D)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      foregroundColor: const Color(0xFF6B1D1D),
-                    ),
-                    child: const Text(
-                      'تحديد السائق',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+    return InkWell(
+      onTap: () {
+        context.navigateToPage(TripDetailsPage(tripId: trip.id));
+      },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'رحلة رقم ${trip.id}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF6B1D1D),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: SizedBox(
-                  height: 40,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      context.navigateToPageWithClearStack(
-                        const TruckDetailsPage(),
-                      );
-                    },
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Color(0xFF6B1D1D)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      foregroundColor: const Color(0xFF6B1D1D),
-                    ),
-                    child: const Text(
-                      'تحديد الشاحنة',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                _buildStatusBadge(trip.status),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Text(
+                  trip.fromCity.name,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF2C3E50),
                   ),
                 ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Icon(
+                    Icons.arrow_back,
+                    size: 16,
+                    color: Color(0xFF6B1D1D),
+                  ),
+                ),
+                Text(
+                  trip.toCity.name,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF2C3E50),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              trip.date,
+              style: TextStyle(fontSize: 13, color: Colors.grey[500]),
+            ),
+            const SizedBox(height: 16),
+            const Divider(height: 1, color: Color(0xFFEEEEEE)),
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () {}, // Stop event propagation to parent InkWell
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 40,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          context.navigateToPage(const ChangeDriverPage());
+                        },
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Color(0xFF6B1D1D)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          foregroundColor: const Color(0xFF6B1D1D),
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                        ),
+                        child: const Text(
+                          'تحديد السائق',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 11,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: SizedBox(
+                      height: 40,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          context.navigateToPageWithClearStack(
+                            const TruckDetailsPage(),
+                          );
+                        },
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Color(0xFF6B1D1D)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          foregroundColor: const Color(0xFF6B1D1D),
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                        ),
+                        child: const Text(
+                          'تحديد الشاحنة',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 11,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: SizedBox(
+                      height: 40,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          context.navigateToPage(const AddCustodyRecordPage());
+                        },
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Color(0xFF6B1D1D)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          foregroundColor: const Color(0xFF6B1D1D),
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                        ),
+                        child: const Text(
+                          'إضافة عهدة',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 11,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

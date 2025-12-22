@@ -13,6 +13,14 @@ class LoginButtonPressedEvent extends LoginEvent {
   List<Object> get props => [];
 }
 
+class LoginRepresentativeButtonPressedEvent extends LoginEvent {
+  const LoginRepresentativeButtonPressedEvent(this.parameters);
+
+  final LoginrepresentativeParameters parameters;
+
+  @override
+  List<Object> get props => [];
+}
 
 class LogoutButtonPressedEvent extends LoginEvent {
   final LogoutParameters parameters;
@@ -31,7 +39,6 @@ class DeleteAccountButtonPressedEvent extends LoginEvent {
   @override
   List<Object> get props => [];
 }
-
 
 class VerifyButtonPressedEvent extends LoginEvent {
   final VerifyParams parameters;

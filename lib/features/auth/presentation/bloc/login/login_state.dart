@@ -20,6 +20,10 @@ class LoginState extends Equatable {
   final BaseResponse resendResponse;
   final RequestState resendRequestState;
 
+  /// Representative Login
+  final BaseResponse<LoginResponseModel> representativeLoginResponse;
+  final RequestState representativeLoginRequestState;
+
   const LoginState({
     this.requestState = RequestState.initial,
     this.response = const BaseResponse(),
@@ -39,6 +43,10 @@ class LoginState extends Equatable {
     /// Resend
     this.resendResponse = const BaseResponse(),
     this.resendRequestState = RequestState.initial,
+
+    /// Representative Login
+    this.representativeLoginResponse = const BaseResponse(),
+    this.representativeLoginRequestState = RequestState.initial,
   });
 
   LoginState copyWith({
@@ -60,6 +68,11 @@ class LoginState extends Equatable {
     /// Resend
     BaseResponse resendResponse = const BaseResponse(),
     RequestState resendRequestState = RequestState.initial,
+
+    /// Representative Login
+    BaseResponse<LoginResponseModel> representativeLoginResponse =
+        const BaseResponse(),
+    RequestState representativeLoginRequestState = RequestState.initial,
   }) {
     return LoginState(
       requestState: requestState,
@@ -81,6 +94,10 @@ class LoginState extends Equatable {
       /// Resend
       resendResponse: resendResponse,
       resendRequestState: resendRequestState,
+
+      /// Representative Login
+      representativeLoginResponse: representativeLoginResponse,
+      representativeLoginRequestState: representativeLoginRequestState,
     );
   }
 
@@ -104,5 +121,9 @@ class LoginState extends Equatable {
     /// Resend
     resendResponse,
     resendRequestState,
+
+    /// Representative Login
+    representativeLoginResponse,
+    representativeLoginRequestState,
   ];
 }

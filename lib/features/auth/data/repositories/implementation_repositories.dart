@@ -6,6 +6,7 @@ import 'package:eltyp_delivery/features/auth/data/data_sources/remote/remote_dat
 import 'package:eltyp_delivery/features/auth/data/models/login_response_model.dart';
 import 'package:eltyp_delivery/features/auth/domain/entities/delete_account_params.dart';
 import 'package:eltyp_delivery/features/auth/domain/entities/login_params.dart';
+import 'package:eltyp_delivery/features/auth/domain/entities/login_representative_params.dart';
 import 'package:eltyp_delivery/features/auth/domain/entities/logout_params.dart';
 import 'package:eltyp_delivery/features/auth/domain/repositories/base_login_repo.dart';
 import 'package:eltyp_delivery/features/auth/domain/use_cases/verify_use_case.dart';
@@ -16,7 +17,9 @@ class LoginRepositoryImpl implements BaseLoginRepository {
   LoginRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<Either<Failure, BaseResponse>> startLogin(LoginParameters parameters) async {
+  Future<Either<Failure, BaseResponse>> startLogin(
+    LoginParameters parameters,
+  ) async {
     try {
       final result = await remoteDataSource.startLogin(parameters);
       return Right(result);
@@ -31,7 +34,26 @@ class LoginRepositoryImpl implements BaseLoginRepository {
   }
 
   @override
-  Future<Either<Failure, BaseResponse>> startLogout(LogoutParameters parameters) async {
+  Future<Either<Failure, BaseResponse>> representativeLogin(
+    LoginrepresentativeParameters parameters,
+  ) async {
+    try {
+      final result = await remoteDataSource.representativeLogin(parameters);
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(
+        ServerFailure(
+          message: failure.message,
+          // errNum: failure.errNum,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, BaseResponse>> startLogout(
+    LogoutParameters parameters,
+  ) async {
     try {
       final result = await remoteDataSource.startLogout(parameters);
       return Right(result);
@@ -80,7 +102,9 @@ class LoginRepositoryImpl implements BaseLoginRepository {
   }
 
   @override
-  Future<Either<Failure, BaseResponse>> startResendCode(LoginParameters parameters) async {
+  Future<Either<Failure, BaseResponse>> startResendCode(
+    LoginParameters parameters,
+  ) async {
     try {
       final result = await remoteDataSource.startResendCode(parameters);
       return Right(result);

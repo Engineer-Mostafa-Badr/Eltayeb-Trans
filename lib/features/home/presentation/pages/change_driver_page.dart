@@ -1,5 +1,10 @@
 import 'package:eltyp_delivery/core/enum/enums.dart';
 import 'package:eltyp_delivery/features/home/presentation/bloc/drivers_bloc.dart';
+import 'package:eltyp_delivery/features/onboarding/presentation/widgets/background_widget.dart';
+import 'package:eltyp_delivery/core/res/app_images.dart';
+import 'package:eltyp_delivery/core/extensions/navigation_extensions.dart';
+import 'package:eltyp_delivery/core/components/images/custom_asset_svg_image.dart';
+import 'package:eltyp_delivery/features/home/presentation/pages/trip_representative_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,213 +31,295 @@ class _ChangeDriverPageState extends State<ChangeDriverPage> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              // Custom Header
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 12.0,
-                ),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.black87),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
+        backgroundColor: Colors.transparent,
+        extendBodyBehindAppBar: true,
+        body: Stack(
+          children: [
+            const BackgroundWidget(image: AssetImagesPath.authBackground),
+            SafeArea(
+              child: Column(
+                children: [
+                  // Custom Header
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 12.0,
                     ),
-                    const SizedBox(width: 12),
-                    // Flag and Language
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 12,
-                            backgroundColor: Colors.transparent,
-                            backgroundImage: NetworkImage(
-                              'https://flagcdn.com/w40/eg.png',
-                            ), // Placeholder for Egypt Flag
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            "AR",
-                            style: TextStyle(
-                              color: Colors.grey[800],
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                    child: Row(
+                      children: [
+                        Directionality(
+                          textDirection: TextDirection.ltr,
+                          child: IconButton(
+                            icon: const CustomAssetSvgImage(
+                              AssetImagesPath.IconSvg,
+                              width: 24,
+                              height: 24,
+                              color: Colors.black87,
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Expanded(
-                      child: Center(
-                        child: Text(
-                          "تغيير السائق",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1A1A1A),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
                           ),
                         ),
-                      ),
-                    ),
-                    // Profile Icon placeholder for alignment
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: const Color(0xFFF5F5F5),
-                      ),
-                      child: const Icon(
-                        Icons.person_outline,
-                        color: Color(0xFF5D0000),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Divider line
-              const Divider(height: 1, thickness: 1, color: Color(0xFFEEEEEE)),
-
-              // List of Drivers
-              Expanded(
-                child: BlocBuilder<DriversBloc, DriversState>(
-                  builder: (context, state) {
-                    if (state.requestState == RequestState.loading) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    if (state.requestState == RequestState.error) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.response.msg ?? 'حدث خطأ في جلب السائقين',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.red,
+                        const SizedBox(width: 12),
+                        // Flag and Language
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            children: [
+                              const CircleAvatar(
+                                radius: 12,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage: NetworkImage(
+                                  'https://flagcdn.com/w40/eg.png',
+                                ), // Placeholder for Egypt Flag
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                'AR',
+                                style: TextStyle(
+                                  color: Colors.grey[800],
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Expanded(
+                          child: Center(
+                            child: Text(
+                              'تغيير السائق',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF1A1A1A),
                               ),
                             ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                context.read<DriversBloc>().add(
-                                  const GetDriversEvent(),
-                                );
-                              },
-                              child: const Text('إعادة المحاولة'),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    final drivers = state.response.data?.drivers ?? [];
-
-                    if (drivers.isEmpty) {
-                      return const Center(
-                        child: Text(
-                          'لا توجد سائقين متاحين',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      );
-                    }
-
-                    return ListView.builder(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: drivers.length,
-                      itemBuilder: (context, index) {
-                        final driver = drivers[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: DriverCard(
-                            name: driver.name,
-                            phone: driver.phone,
-                            isAvailable: driver.status == 'available',
-                            isSelected: selectedDriverId == driver.id,
-                            onTap: () {
-                              setState(() {
-                                selectedDriverId = driver.id;
-                              });
-                            },
                           ),
+                        ),
+                        // Profile Icon placeholder for alignment
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFFF5F5F5),
+                          ),
+                          child: const Icon(
+                            Icons.person_outline,
+                            color: Color(0xFF5D0000),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Divider line
+                  const Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: Color(0xFFEEEEEE),
+                  ),
+
+                  // List of Drivers
+                  Expanded(
+                    child: BlocBuilder<DriversBloc, DriversState>(
+                      builder: (context, state) {
+                        if (state.requestState == RequestState.loading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        if (state.requestState == RequestState.error) {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  state.response.msg ??
+                                      'حدث خطأ في جلب السائقين',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.read<DriversBloc>().add(
+                                      const GetDriversEvent(),
+                                    );
+                                  },
+                                  child: const Text('إعادة المحاولة'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        final drivers = state.response.data?.drivers ?? [];
+
+                        if (drivers.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              'لا توجد سائقين متاحين',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          );
+                        }
+
+                        return ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: drivers.length,
+                          itemBuilder: (context, index) {
+                            final driver = drivers[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12.0),
+                              child: DriverCard(
+                                name: driver.name,
+                                phone: driver.phone,
+                                isAvailable: driver.status == 'available',
+                                isSelected: selectedDriverId == driver.id,
+                                onTap: () {
+                                  setState(() {
+                                    selectedDriverId = driver.id;
+                                  });
+                                },
+                              ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                ),
-              ),
-
-              // Confirm Button
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-                color: Colors.transparent,
-                child: ElevatedButton(
-                  onPressed: selectedDriverId != null
-                      ? () {
-                          // TODO: Implement confirm driver change logic
-                          Navigator.of(context).pop(selectedDriverId);
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF5D0000), // Deep Maroon
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
                     ),
-                    elevation: 0,
-                    disabledBackgroundColor: Colors.grey,
                   ),
-                  child: const Text(
-                    "تأكيد تغيير السائق",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+
+                  // Confirm Button
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    color: Colors.transparent,
+                    child: ElevatedButton(
+                      onPressed: selectedDriverId != null
+                          ? () {
+                              Navigator.of(context).pop(selectedDriverId);
+                            }
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF5D0000), // Deep Maroon
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
+                        disabledBackgroundColor: Colors.grey,
+                      ),
+                      child: const Text(
+                        'تأكيد تغيير السائق',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
+              ),
+            ),
+          ],
+        ),
+
+        // Bottom Navigation Bar - Custom without selection
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, -2),
               ),
             ],
           ),
+          child: SafeArea(
+            child: Container(
+              height: 60,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildNavItem(
+                    icon: Icons.home_filled,
+                    label: 'الرحلات',
+                    onTap: () {
+                      // Return to trips page
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  _buildNavItem(
+                    icon: Icons.notifications_none,
+                    label: 'الإشعارات',
+                    onTap: () {
+                      // Go to notifications page via main page
+                      Navigator.of(context).pop(); // Pop current page
+                      context.navigateToPageWithReplacement(
+                        const TripsRepresentativePage(initialIndex: 1),
+                      );
+                    },
+                  ),
+                  _buildNavItem(
+                    icon: Icons.person_outline,
+                    label: 'البروفايل',
+                    onTap: () {
+                      // Go to profile page via main page
+                      Navigator.of(context).pop(); // Pop current page
+                      context.navigateToPageWithReplacement(
+                        const TripsRepresentativePage(initialIndex: 2),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
+      ),
+    );
+  }
 
-        // Bottom Navigation Bar
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex:
-              2, // 'Trips' roughly corresponds to Home/Rightmost in RTL
-          selectedItemColor: const Color(0xFF5D0000),
-          unselectedItemColor: Colors.grey,
-          showUnselectedLabels: true,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              label: 'البروفايل',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_none),
-              label: 'الإشعارات',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              label: 'الرحلات',
+  Widget _buildNavItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.grey, size: 24),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),
@@ -269,7 +356,7 @@ class DriverCard extends StatelessWidget {
     final statusTextColor = isAvailable
         ? const Color(0xFF2E7D32)
         : const Color(0xFFC62828);
-    final statusText = isAvailable ? "متاح" : "مشغول";
+    final statusText = isAvailable ? 'متاح' : 'مشغول';
 
     return GestureDetector(
       onTap: onTap,

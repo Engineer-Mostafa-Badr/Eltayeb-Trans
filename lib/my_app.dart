@@ -10,7 +10,7 @@ import 'package:eltyp_delivery/features/home/presentation/bloc/drivers_bloc.dart
 import 'package:eltyp_delivery/features/home/presentation/bloc/trips_bloc.dart';
 import 'package:eltyp_delivery/features/home/presentation/bloc/trucks_bloc.dart';
 import 'package:eltyp_delivery/features/injection_container.dart' as di;
-import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_representative_page.dart';
 import 'package:eltyp_delivery/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:eltyp_delivery/main.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
             onExecute: () {
               final ctx = navigatorKey.currentContext;
               if (ctx != null) {
-                ctx.navigateToPage(const NotificationsPage());
+                ctx.navigateToPage(const NotificationsRepresentativePage());
               }
             },
           );

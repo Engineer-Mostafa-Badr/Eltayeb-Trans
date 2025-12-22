@@ -5,12 +5,14 @@ sealed class NotificationsEvent extends Equatable {
 }
 
 class NotificationsFetchEvent extends NotificationsEvent {
-  final PaginationParameters params;
+  final GetNotificationsParameters params;
 
-  const NotificationsFetchEvent({this.params = const PaginationParameters()});
+  const NotificationsFetchEvent({
+    this.params = const GetNotificationsParameters(filter: 'all'),
+  });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [params];
 }
 
 class ReadNotificationEvent extends NotificationsEvent {

@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,13 +9,14 @@ import 'package:eltyp_delivery/core/components/calendar/date_calendar_reuse.dart
 import 'package:eltyp_delivery/core/components/textformfields/city_drop_down.dart';
 import 'package:eltyp_delivery/core/components/textformfields/custom_dropdown.dart';
 import 'package:eltyp_delivery/core/components/textformfields/reused_textformfield.dart';
+import 'package:eltyp_delivery/core/components/images/custom_asset_svg_image.dart';
 import 'package:eltyp_delivery/core/components/utils/custom_rounded_container.dart';
 import 'package:eltyp_delivery/core/extensions/navigation_extensions.dart';
 import 'package:eltyp_delivery/core/extensions/shared_extensions.dart';
 import 'package:eltyp_delivery/core/res/app_images.dart';
 import 'package:eltyp_delivery/core/utils/app_const.dart';
 import 'package:eltyp_delivery/core/utils/app_sizes.dart';
-import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_representative_page.dart';
 import 'package:eltyp_delivery/features/profile/presentation/pages/profile_page.dart';
 
 class EditTripDetailsPage extends StatefulWidget {
@@ -166,9 +168,17 @@ class _EditTripDetailsPageState extends State<EditTripDetailsPage> {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.black),
-        onPressed: () => Navigator.pop(context),
+      leading: Directionality(
+        textDirection: ui.TextDirection.ltr,
+        child: IconButton(
+          icon: const CustomAssetSvgImage(
+            AssetImagesPath.IconSvg,
+            width: 24,
+            height: 24,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       title: Row(
         children: [
@@ -378,7 +388,7 @@ class _EditTripDetailsPageState extends State<EditTripDetailsPage> {
           if (index == 0) {
             context.navigateToPage(const ProfilePage());
           } else if (index == 1) {
-            context.navigateToPage(const NotificationsPage());
+            context.navigateToPage(const NotificationsRepresentativePage());
           }
           // index 2 is trips, stay on current page
         },

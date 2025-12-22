@@ -1,9 +1,12 @@
 import 'package:eltyp_delivery/core/enum/enums.dart';
-import 'package:eltyp_delivery/features/home/data/models/trucks_model.dart';
 import 'package:eltyp_delivery/features/home/domain/entities/trucks_entities.dart';
 import 'package:eltyp_delivery/features/home/presentation/bloc/trucks_bloc.dart';
+import 'package:eltyp_delivery/core/components/images/custom_asset_svg_image.dart';
+import 'package:eltyp_delivery/core/res/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eltyp_delivery/core/extensions/navigation_extensions.dart';
+import 'trip_representative_page.dart';
 
 class TruckDetailsPage extends StatefulWidget {
   const TruckDetailsPage({super.key});
@@ -107,16 +110,24 @@ class _TruckDetailsPageState extends State<TruckDetailsPage> {
       child: Row(
         children: [
           // Back Button
-          Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFFEEEEEE),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.black87),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xFFEEEEEE),
+              ),
+              child: IconButton(
+                icon: const CustomAssetSvgImage(
+                  AssetImagesPath.IconSvg,
+                  width: 24,
+                  height: 24,
+                  color: Colors.black87,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -384,40 +395,76 @@ class _TruckDetailsPageState extends State<TruckDetailsPage> {
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: const Offset(0, -5),
+            offset: const Offset(0, -2),
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildNavItem(Icons.home_outlined, 'الرحلات', false),
-          _buildNavItem(Icons.notifications_outlined, 'الإشعارات', false),
-          _buildNavItem(Icons.person_outline, 'البروفايل', false),
-        ],
+      child: SafeArea(
+        child: Container(
+          height: 60,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildNavItem(
+                icon: Icons.home_filled,
+                label: 'الرحلات',
+                onTap: () {
+                  // Return to trips page
+                  Navigator.of(context).pop();
+                },
+              ),
+              _buildNavItem(
+                icon: Icons.notifications_none,
+                label: 'الإشعارات',
+                onTap: () {
+                  // Go to notifications page via main page
+                  context.navigateToPageWithClearStack(
+                    const TripsRepresentativePage(initialIndex: 1),
+                  );
+                },
+              ),
+              _buildNavItem(
+                icon: Icons.person_outline,
+                label: 'البروفايل',
+                onTap: () {
+                  // Go to profile page via main page
+                  context.navigateToPageWithClearStack(
+                    const TripsRepresentativePage(initialIndex: 2),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, bool isActive) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: isActive ? const Color(0xFF680006) : Colors.grey,
-          size: 26,
+  Widget _buildNavItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: Colors.grey, size: 24),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            color: isActive ? const Color(0xFF680006) : Colors.grey,
-            fontSize: 12,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

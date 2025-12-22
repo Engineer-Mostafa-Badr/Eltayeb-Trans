@@ -38,10 +38,7 @@ PreferredSizeWidget tripsAppBar() {
             ),
           ),
         ),
-        title: Image.asset(
-          AssetImagesPath.appLogo,
-          height: 55.h,
-        ),
+        title: Image.asset(AssetImagesPath.appLogo, height: 55.h),
         actions: [
           const LanguageSwitcherRow(text: 'AR'),
           Padding(

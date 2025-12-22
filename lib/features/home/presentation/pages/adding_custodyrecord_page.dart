@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:eltyp_delivery/core/components/images/custom_asset_svg_image.dart';
+import 'package:eltyp_delivery/core/res/app_images.dart';
 
 class AddCustodyRecordPage extends StatelessWidget {
   const AddCustodyRecordPage({super.key});
@@ -41,10 +43,14 @@ class AddCustodyRecordPage extends StatelessWidget {
                       // Left Side: Back Button & Language Flag
                       Row(
                         children: [
-                          _buildCircleButton(
-                            icon: Icons.arrow_back,
-                            iconSize: 22,
-                            color: Colors.black,
+                          Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: _buildCircleButton(
+                              icon: null,
+                              svgPath: AssetImagesPath.IconSvg,
+                              iconSize: 22,
+                              color: Colors.black,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Container(
@@ -237,7 +243,8 @@ class AddCustodyRecordPage extends StatelessWidget {
   }
 
   Widget _buildCircleButton({
-    required IconData icon,
+    IconData? icon,
+    String? svgPath,
     required double iconSize,
     required Color color,
     Color backgroundColor = Colors.white,
@@ -251,7 +258,16 @@ class AddCustodyRecordPage extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(color: borderColor),
       ),
-      child: Icon(icon, size: iconSize, color: color),
+      child: svgPath != null
+          ? Center(
+              child: CustomAssetSvgImage(
+                svgPath,
+                width: iconSize,
+                height: iconSize,
+                color: color,
+              ),
+            )
+          : Icon(icon, size: iconSize, color: color),
     );
   }
 }

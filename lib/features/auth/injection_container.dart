@@ -7,6 +7,7 @@ import 'package:eltyp_delivery/features/auth/domain/use_cases/login_use_case.dar
 import 'package:eltyp_delivery/features/auth/domain/use_cases/logout_use_case.dart';
 import 'package:eltyp_delivery/features/auth/domain/use_cases/resend_code_use_case.dart';
 import 'package:eltyp_delivery/features/auth/domain/use_cases/verify_use_case.dart';
+import 'package:eltyp_delivery/features/auth/domain/use_cases/login_representative_use_case.dart';
 import 'package:eltyp_delivery/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:eltyp_delivery/features/injection_container.dart';
 
@@ -16,6 +17,9 @@ Future<void> loginModule() async {
     () => LoginUseCase(sl<BaseLoginRepository>()),
   );
 
+  sl.registerLazySingleton<LoginRepresentativeUseCase>(
+    () => LoginRepresentativeUseCase(sl<BaseLoginRepository>()),
+  );
 
   sl.registerLazySingleton<LogoutUseCase>(
     () => LogoutUseCase(sl<BaseLoginRepository>()),
@@ -24,7 +28,6 @@ Future<void> loginModule() async {
   sl.registerLazySingleton<DeleteAccountUseCase>(
     () => DeleteAccountUseCase(sl<BaseLoginRepository>()),
   );
-
 
   sl.registerLazySingleton<VerifyUseCase>(
     () => VerifyUseCase(sl<BaseLoginRepository>()),
@@ -48,6 +51,7 @@ Future<void> loginModule() async {
   sl.registerFactory<LoginBloc>(
     () => LoginBloc(
       sl<LoginUseCase>(),
+      sl<LoginRepresentativeUseCase>(),
       sl<LogoutUseCase>(),
       sl<DeleteAccountUseCase>(),
       sl<VerifyUseCase>(),

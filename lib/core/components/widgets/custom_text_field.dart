@@ -23,6 +23,7 @@ class CustomTextField extends StatefulWidget {
   final TextDirection? textDirection;
   final TextAlign textAlign;
   final String? initialValue;
+  final TextStyle? style;
 
   const CustomTextField({
     super.key,
@@ -47,6 +48,7 @@ class CustomTextField extends StatefulWidget {
     this.textDirection,
     this.textAlign = TextAlign.start,
     this.initialValue,
+    this.style,
   });
 
   @override
@@ -81,6 +83,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       minLines: widget.minLines,
       textDirection: widget.textDirection,
       textAlign: widget.textAlign,
+      style:
+          widget.style ??
+          const TextStyle(color: Colors.black, fontFamily: 'Cairo'),
       decoration: InputDecoration(
         hintText: widget.hintText,
         labelText: widget.labelText,

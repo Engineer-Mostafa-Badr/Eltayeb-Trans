@@ -203,4 +203,8 @@ class AssetImagesPath {
   static const PersonIconSvg = 'assets/images/svg/Person.svg';
   static const PasswordIconSvg = 'assets/images/svg/Password.svg';
   static const HomeIconSvg = 'assets/images/svg/Home.svg';
+  static const IconSvg = 'assets/images/svg/Icon.svg';
+  static const LogoSvg = 'assets/images/svg/logo.svg';
+  static const LocationSvg = 'assets/images/svg/Location.svg';
+  static const Notification1Svg = 'assets/images/svg/Notification1.svg';
 }

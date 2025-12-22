@@ -10,7 +10,7 @@ import 'package:eltyp_delivery/core/extensions/navigation_extensions.dart';
 import 'package:eltyp_delivery/core/extensions/shared_extensions.dart';
 import 'package:eltyp_delivery/core/utils/app_const.dart';
 import 'package:eltyp_delivery/core/utils/app_sizes.dart';
-import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_representative_page.dart';
 import 'package:eltyp_delivery/features/profile/presentation/pages/profile_page.dart';
 import 'edit_trip_details_page.dart';
 
@@ -339,7 +339,7 @@ class TripDetailsManagementPage extends StatelessWidget {
           if (index == 0) {
             // Stay on trips page
           } else if (index == 1) {
-            context.navigateToPage(const NotificationsPage());
+            context.navigateToPage(const NotificationsRepresentativePage());
           } else if (index == 2) {
             context.navigateToPage(const ProfilePage());
           }

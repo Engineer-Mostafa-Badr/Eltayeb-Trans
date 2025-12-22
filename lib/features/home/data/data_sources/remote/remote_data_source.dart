@@ -34,10 +34,35 @@ class HomeRemoteDataSource extends BaseTripsRemoteDataSource {
     );
 
     if (StatusCode.isSuccessful(response)) {
+      final responseData = response.data[BaseResponse.dataKey];
+
+      // Handle case where data is a List directly
+      Map<String, dynamic> tripsData;
+      if (responseData is List) {
+        tripsData = {
+          'trips': responseData,
+          'active_trips_count': 0,
+          'monthly_trips_count': 0,
+        };
+      } else if (responseData is Map<String, dynamic>) {
+        tripsData = responseData;
+      } else {
+        tripsData = {
+          'trips': [],
+          'active_trips_count': 0,
+          'monthly_trips_count': 0,
+        };
+      }
+
+      final paginationData = response.data[BaseResponse.paginationKey];
       return BaseResponse<TripsModel>(
         status: response.data[BaseResponse.statusKey],
-        data: TripsModel.fromJson(response.data[BaseResponse.dataKey]),
+        data: TripsModel.fromJson(tripsData),
         msg: response.data[BaseResponse.msgKey],
+        pagination:
+            paginationData != null && paginationData is Map<String, dynamic>
+            ? PaginationModel.fromJson(paginationData)
+            : null,
       );
     } else {
       throw ServerException(message: StatusCode.errorMessage(response));

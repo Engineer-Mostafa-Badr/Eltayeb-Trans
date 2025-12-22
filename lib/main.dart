@@ -7,7 +7,6 @@ import 'package:eltyp_delivery/core/storage/secure_boot.dart';
 import 'package:eltyp_delivery/core/utils/app_const.dart';
 import 'package:eltyp_delivery/features/auth/presentation/pages/login_page.dart';
 import 'package:eltyp_delivery/features/injection_container.dart' as di;
-import 'package:eltyp_delivery/features/landing/presentation/pages/landing_page.dart';
 import 'package:eltyp_delivery/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:eltyp_delivery/my_app.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'features/auth/presentation/pages/login_representative_page.dart';
+import 'features/home/presentation/pages/trip_representative_page.dart';
 
 /// Global variable to hold the initial screen widget
 Widget appStartScreen = const LoginPage();
@@ -36,7 +36,7 @@ Future<void> startScreen() async {
   if (!isFirstTime) {
     appStartScreen = const OnBoardingPage();
   } else if (isLoggedIn) {
-    appStartScreen = const LandingPage();
+    appStartScreen = const TripsRepresentativePage();
   } else {
     appStartScreen = const LoginRepresentativePage();
   }

@@ -10,8 +10,14 @@ import 'package:eltyp_delivery/features/auth/domain/entities/login_params.dart';
 import 'package:eltyp_delivery/features/auth/domain/entities/logout_params.dart';
 import 'package:eltyp_delivery/features/auth/domain/use_cases/verify_use_case.dart';
 
+import '../../../domain/entities/login_representative_params.dart';
+
 abstract class BaseLoginRemoteDataSource {
   Future<BaseResponse> startLogin(LoginParameters parameters);
+
+  Future<BaseResponse> representativeLogin(
+    LoginrepresentativeParameters parameters,
+  );
 
   Future<BaseResponse> startLogout(LogoutParameters parameters);
 
@@ -27,6 +33,7 @@ class LoginRemoteDataSource extends BaseLoginRemoteDataSource {
 
   LoginRemoteDataSource(this._apiConsumer);
 
+  // ================= Login User =================
   @override
   Future<BaseResponse> startLogin(LoginParameters parameters) async {
     final response = await _apiConsumer.post(
@@ -48,6 +55,32 @@ class LoginRemoteDataSource extends BaseLoginRemoteDataSource {
     }
   }
 
+  // ================= Representative Login =================
+
+  @override
+  Future<BaseResponse> representativeLogin(
+    LoginrepresentativeParameters parameters,
+  ) async {
+    final response = await _apiConsumer.post(
+      EndPoints.loginRepresentative,
+      authenticated: false,
+      data: parameters.toJson(),
+    );
+
+    if (StatusCode.isSuccessful(response)) {
+      return BaseResponse<LoginResponseModel>(
+        status: response.data[BaseResponse.statusKey],
+        data: response.data[BaseResponse.dataKey] == null
+            ? null
+            : LoginResponseModel.fromJson(response.data[BaseResponse.dataKey]),
+        msg: response.data[BaseResponse.msgKey],
+      );
+    } else {
+      throw ServerException(message: StatusCode.errorMessage(response));
+    }
+  }
+
+  // ================= Logout =================
   @override
   Future<BaseResponse> startLogout(LogoutParameters parameters) async {
     final response = await _apiConsumer.post(
@@ -66,8 +99,11 @@ class LoginRemoteDataSource extends BaseLoginRemoteDataSource {
     }
   }
 
+  // ================= Delete Account =================
   @override
-  Future<BaseResponse> startDeleteAccount(DeleteAccountParameters parameters) async {
+  Future<BaseResponse> startDeleteAccount(
+    DeleteAccountParameters parameters,
+  ) async {
     final response = await _apiConsumer.post(
       EndPoints.deleteAccount,
       authenticated: true,
@@ -84,8 +120,11 @@ class LoginRemoteDataSource extends BaseLoginRemoteDataSource {
     }
   }
 
+  // ================= Verify OTP =================
   @override
-  Future<BaseResponse<LoginResponseModel>> startVerify(VerifyParams parameters) async {
+  Future<BaseResponse<LoginResponseModel>> startVerify(
+    VerifyParams parameters,
+  ) async {
     final response = await _apiConsumer.post(
       EndPoints.verifyOTP,
       authenticated: false,
@@ -105,6 +144,7 @@ class LoginRemoteDataSource extends BaseLoginRemoteDataSource {
     }
   }
 
+  // ================= Resend Code =================
   @override
   Future<BaseResponse> startResendCode(LoginParameters parameters) async {
     final response = await _apiConsumer.post(

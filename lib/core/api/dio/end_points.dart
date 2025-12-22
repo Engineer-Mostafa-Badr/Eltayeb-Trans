@@ -16,6 +16,7 @@ class EndPoints {
   static const String cities = '/cities';
   static const String countries = '/countries';
   static const String notifications = '/auth/notifications';
+  static const String employeeNotifications = '/employee/notifications';
   static const String readAllNotifications =
       '/auth/notifications/mark-all-as-read';
 
@@ -30,6 +31,7 @@ class EndPoints {
   /// auth
   static const String register = '/auth/register';
   static const String login = '/auth/login';
+  static const String loginRepresentative = '/auth/employee-login';
   static const String socialLogin = '/login/social/callback';
   static const String logout = '/logout';
   static const String deleteAccount = '/delete-account';

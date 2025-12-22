@@ -12,7 +12,7 @@ import 'package:eltyp_delivery/core/res/app_images.dart';
 import 'package:eltyp_delivery/core/utils/app_const.dart';
 import 'package:eltyp_delivery/core/utils/app_sizes.dart';
 import 'package:eltyp_delivery/features/home/presentation/bloc/trips_bloc.dart';
-import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:eltyp_delivery/features/notifications/presentation/pages/notifications_representative_page.dart';
 import 'package:eltyp_delivery/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:eltyp_delivery/features/profile/presentation/pages/profile_page.dart';
 
@@ -105,7 +105,9 @@ class SharedHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     TripsBloc.get(
                       context,
                     ).add(const MakeCounterNotificationZeroEvent());
-                    context.navigateToPage(const NotificationsPage());
+                    context.navigateToPage(
+                      const NotificationsRepresentativePage(),
+                    );
                   },
                 );
               },

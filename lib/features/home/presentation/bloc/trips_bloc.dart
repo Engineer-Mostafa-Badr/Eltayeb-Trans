@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:eltyp_delivery/core/api/dio/base_response.dart';
 import 'package:eltyp_delivery/core/enum/enums.dart';
-import 'package:eltyp_delivery/core/usecase/base_use_case.dart';
 import 'package:eltyp_delivery/features/home/data/models/trips_model.dart';
 import 'package:eltyp_delivery/features/home/domain/use_cases/get_trips_usecase.dart';
 import 'package:equatable/equatable.dart';

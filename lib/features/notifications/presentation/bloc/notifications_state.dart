@@ -4,7 +4,7 @@ class NotificationsState extends Equatable {
   /// get notifications state
   final RequestState getNotificationsState;
   final BaseResponse<List<NotificationsModel>> getNotificationsResponse;
-  final PaginationParameters getNotificationsParameters;
+  final GetNotificationsParameters getNotificationsParameters;
 
   /// read notification state
   final RequestState readNotificationState;
@@ -18,7 +18,9 @@ class NotificationsState extends Equatable {
     /// get notifications
     this.getNotificationsState = RequestState.loading,
     this.getNotificationsResponse = const BaseResponse(),
-    this.getNotificationsParameters = const PaginationParameters(),
+    this.getNotificationsParameters = const GetNotificationsParameters(
+      filter: 'all',
+    ),
 
     /// read notifications
     this.readNotificationState = RequestState.initial,
@@ -33,7 +35,7 @@ class NotificationsState extends Equatable {
     /// get notifications state
     RequestState? getNotificationsState,
     BaseResponse<List<NotificationsModel>>? getNotificationsResponse,
-    PaginationParameters? getNotificationsParameters,
+    GetNotificationsParameters? getNotificationsParameters,
 
     /// read notification state
     RequestState readNotificationState = RequestState.initial,
