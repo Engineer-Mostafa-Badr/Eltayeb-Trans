@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
-import 'package:eltyp_delivery/core/utils/app_const.dart';
+import 'package:eltyp_delivery/core/constants/app_constants.dart';
 
 class Validators {
   static String? validatePassword(String? value) {
@@ -110,7 +110,7 @@ class Validators {
       return 'birth_date_must_be_in_the_past'.tr();
     }
     // birth date must be at least 17 years ago
-    final DateTime minDate = DateTime.now().subtract(AppConst.minimumAge);
+    final DateTime minDate = DateTime.now().subtract(AppConstants.minimumAge);
     if (birthDate.isAfter(minDate)) {
       return 'you_must_be_at_least_17_years_old'.tr();
     }

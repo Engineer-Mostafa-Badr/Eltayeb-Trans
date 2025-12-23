@@ -10,6 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double elevation;
   final bool centerTitle;
   final double toolbarHeight;
+  final Widget? flexibleSpace;
 
   const CustomAppBar({
     super.key,
@@ -20,6 +21,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.elevation = 0,
     this.centerTitle = false,
     this.toolbarHeight = kToolbarHeight,
+    this.flexibleSpace,
   });
 
   @override
@@ -32,6 +34,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: elevation,
       centerTitle: centerTitle,
       toolbarHeight: toolbarHeight,
+      flexibleSpace: flexibleSpace,
     );
   }
 

@@ -1,9 +1,11 @@
+import 'dart:ui' as ui show TextDirection;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../config/themes/colors.dart';
 import '../../../../../config/themes/styles.dart';
 import '../../../../../core/utils/app_sizes.dart';
+import '../../../../../core/components/widgets/custom_text_field.dart';
 
 class TicketInputBar extends StatelessWidget {
   const TicketInputBar({super.key});
@@ -38,22 +40,28 @@ class TicketInputBar extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Icon(Icons.attach_file_rounded, size: 20, color: AppColors.cPrimary),
+              child: const Icon(
+                Icons.attach_file_rounded,
+                size: 20,
+                color: AppColors.cPrimary,
+              ),
             ),
 
             const SizedBox(width: 12),
 
             Expanded(
-              child: TextField(
+              child: CustomTextField(
+                hintText: 'write_your_message_here'.tr(),
                 textAlign: TextAlign.right,
-                decoration: InputDecoration(
-                  hintText: 'write_your_message_here'.tr(),
-                  border: InputBorder.none,
-                  hintStyle: AppStyles.subtitle500.copyWith(
-                    fontSize: 13,
-                    color: AppColors.cTextSubtitleLight,
-                  ),
+                textDirection: ui.TextDirection.rtl,
+                fillColor: Colors.transparent,
+                borderColor: Colors.transparent,
+                focusedBorderColor: Colors.transparent,
+                style: AppStyles.subtitle500.copyWith(
+                  fontSize: 13,
+                  color: AppColors.cTextSubtitleLight,
                 ),
+                contentPadding: EdgeInsets.zero,
               ),
             ),
 
@@ -62,8 +70,15 @@ class TicketInputBar extends StatelessWidget {
             Container(
               width: 45,
               height: 45,
-              decoration: const BoxDecoration(color: AppColors.cPrimary, shape: BoxShape.circle),
-              child: const Icon(Icons.send_rounded, size: 22, color: Colors.white),
+              decoration: const BoxDecoration(
+                color: AppColors.cPrimary,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.send_rounded,
+                size: 22,
+                color: Colors.white,
+              ),
             ),
           ],
         ),

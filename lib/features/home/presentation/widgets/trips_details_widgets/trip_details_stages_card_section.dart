@@ -1,11 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eltyp_delivery/core/components/utils/custom_rounded_container.dart';
-import 'package:eltyp_delivery/features/home/presentation/widgets/trip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../config/themes/styles.dart';
 import '../../../data/models/trips_model.dart';
+import '../trip_model_extensions.dart';
 import '../trip_progress_section.dart';
 
 class TripDetailsStagesCardSection extends StatelessWidget {

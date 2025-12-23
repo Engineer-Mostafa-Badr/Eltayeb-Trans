@@ -5,7 +5,10 @@ import 'package:eltyp_delivery/features/auth/data/models/user_model.dart';
 final String notSpecified = 'not_specified'.tr();
 
 /// Application-wide constants and configuration
+/// Note: Consider migrating to AppConstants for better organization
 class AppConst {
+  AppConst._();
+
   /// Application name
   static const String appName = 'الطيب لخدمات النقل';
 
@@ -18,9 +21,6 @@ class AppConst {
   /// Flag to indicate if the app is in review mode
   static bool appInReview = false;
 
-  /// Default country code
-  static const String countryCode = 'SA';
-
   /// Absence appointment cost (if applicable)
   static String absenceAppointmentCost = '150';
 
@@ -31,6 +31,7 @@ class AppConst {
   static const String successText = 'successful_operation';
 
   /// Google Maps API key
+  /// TODO: Move to environment variables for security
   static const String googleMapsApiKey =
       'AIzaSyASM7VEAkM0XHKds0Tlp7w--Hqd24k0BSo';
 
@@ -52,13 +53,9 @@ class AppConst {
   /// Currency symbol (localized)
   static String currency = 'sar'.tr();
 
-  /// Minimum age duration (if applicable)
-  static const Duration minimumAge = Duration(days: 6209, hours: 6);
-
   /// Returns the appropriate font name based on locale
   /// Currently uses Tajawal for all languages
   static String fontName(BuildContext context) {
-    // All supported languages use Tajawal font
     return 'Tajawal';
   }
 
@@ -66,9 +63,9 @@ class AppConst {
   static List<String> permissions = [];
 
   /// Most commonly used date format in the app
-  static DateFormat mostUsedDateFormat = DateFormat('yyyy-MM-dd', 'en_US');
+  static DateFormat get mostUsedDateFormat => DateFormat('yyyy-MM-dd', 'en_US');
 
-  /// BOXES NAMES
+  /// BOXES NAMES - Storage keys
   static const mainBoxName = 'mainBox';
   static const userIdBox = 'userId';
   static const isDarkBox = 'isDarkBox';

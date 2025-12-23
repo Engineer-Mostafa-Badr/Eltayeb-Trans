@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:dio/dio.dart';
 
 class UpdateProfileParams extends Equatable {
   final String name;

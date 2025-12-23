@@ -70,9 +70,8 @@ class LoginState extends Equatable {
     RequestState resendRequestState = RequestState.initial,
 
     /// Representative Login
-    BaseResponse<LoginResponseModel> representativeLoginResponse =
-        const BaseResponse(),
-    RequestState representativeLoginRequestState = RequestState.initial,
+    BaseResponse<LoginResponseModel>? representativeLoginResponse,
+    RequestState? representativeLoginRequestState,
   }) {
     return LoginState(
       requestState: requestState,
@@ -96,8 +95,11 @@ class LoginState extends Equatable {
       resendRequestState: resendRequestState,
 
       /// Representative Login
-      representativeLoginResponse: representativeLoginResponse,
-      representativeLoginRequestState: representativeLoginRequestState,
+      representativeLoginResponse:
+          representativeLoginResponse ?? this.representativeLoginResponse,
+      representativeLoginRequestState:
+          representativeLoginRequestState ??
+          this.representativeLoginRequestState,
     );
   }
 

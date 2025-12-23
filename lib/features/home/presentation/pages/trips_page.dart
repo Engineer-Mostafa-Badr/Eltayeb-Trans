@@ -1,15 +1,14 @@
-import 'package:eltyp_delivery/core/components/utils/widgets.dart';
-import 'package:eltyp_delivery/features/home/data/models/trips_model.dart';
-import 'package:eltyp_delivery/features/home/presentation/bloc/trips_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../core/components/lists/sliver_list_view_with_pagination.dart';
-import '../../../../core/enum/enums.dart';
-import '../../../../core/res/app_images.dart';
+import 'package:eltyp_delivery/features/home/presentation/bloc/trips_bloc.dart';
+import 'package:eltyp_delivery/features/home/data/models/trips_model.dart';
 import '../../../onboarding/presentation/widgets/background_widget.dart';
-import '../widgets/trips_app_bar.dart';
+import 'package:eltyp_delivery/core/components/utils/widgets.dart';
 import '../widgets/trips_home_body_section.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/res/app_images.dart';
+import '../../../../core/enum/enums.dart';
+import '../widgets/trips_app_bar.dart';
+import 'package:flutter/material.dart';
 
 class TripsPage extends StatelessWidget {
   const TripsPage({super.key});

@@ -143,5 +143,14 @@
   "select_truck": "تحديد الشاحنة",
   "edit_trip_data": "تعديل بيانات الرحلة",
   "notes": "ملاحظات",
+  "search_trip": "ابحث عن رحلة",
+  "retry": "إعادة المحاولة",
+  "confirm_truck_change": "تأكيد تغيير الشاحنة",
+  "confirm_driver_change": "تأكيد تغيير السائق",
+  "add_custody": "إضافة العهدة",
+  "error_loading_trucks": "حدث خطأ في جلب الشاحنات",
+  "error_loading_drivers": "حدث خطأ في جلب السائقين",
+  "no_trucks_available": "لا توجد شاحنات متاحة",
+  "no_drivers_available": "لا توجد سائقين متاحين",
   "": ""
 }

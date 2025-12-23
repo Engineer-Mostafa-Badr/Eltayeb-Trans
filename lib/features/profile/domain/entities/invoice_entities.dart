@@ -1,5 +1,5 @@
-import 'package:equatable/equatable.dart';
 import 'package:eltyp_delivery/features/profile/data/models/invoice_model.dart';
+import 'package:equatable/equatable.dart';
 
 class DoctorEntity extends Equatable {
   const DoctorEntity({

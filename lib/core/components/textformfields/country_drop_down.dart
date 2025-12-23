@@ -2,7 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eltyp_delivery/core/components/textformfields/custom_dropdown.dart';
-import 'package:eltyp_delivery/core/cubit/app_cubit.dart';
+import 'package:eltyp_delivery/core/cubit/location_cubit.dart';
+import 'package:eltyp_delivery/features/injection_container.dart' as di;
 
 class CountryDropDown extends StatefulWidget {
   const CountryDropDown({
@@ -39,49 +40,47 @@ class _CountryDropDownState extends State<CountryDropDown>
   @override
   void initState() {
     super.initState();
-    if (MainAppCubit.get(context).countriesModel.isEmpty) {
-      MainAppCubit.get(context).getCountries().then((value) {
-        if (widget.initValue != null) {
-          for (final country in MainAppCubit.get(context).countriesModel) {
-            if (country.id == widget.initValue) {
-              selectedCity = country.name;
-              break;
-            }
-          }
+    final locationCubit = di.sl<LocationCubit>();
+    if (locationCubit.countries.isEmpty) {
+      locationCubit.getCountries().then((_) {
+        if (mounted && widget.initValue != null) {
+          _setInitialValue(locationCubit.countries);
         }
       });
     } else {
       if (widget.initValue != null) {
-        for (final country in MainAppCubit.get(context).countriesModel) {
-          if (country.id == widget.initValue) {
-            selectedCity = country.name;
-            break;
-          }
-        }
+        _setInitialValue(locationCubit.countries);
       }
     }
-    // selectedCity ??= MainAppCubit.get(context).countriesModel.first.name;
+  }
+
+  void _setInitialValue(List countries) {
+    for (final country in countries) {
+      if (country.id == widget.initValue) {
+        setState(() {
+          selectedCity = country.name;
+        });
+        break;
+      }
+    }
   }
 
   @override
   void didUpdateWidget(covariant CountryDropDown oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initValue != oldWidget.initValue && widget.initValue != null) {
-      for (final country in MainAppCubit.get(context).countriesModel) {
-        if (country.id == widget.initValue) {
-          selectedCity = country.name;
-          break;
-        }
-      }
+      final locationCubit = di.sl<LocationCubit>();
+      _setInitialValue(locationCubit.countries);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocBuilder<MainAppCubit, MainAppCubitState>(
+    return BlocBuilder<LocationCubit, LocationState>(
+      bloc: di.sl<LocationCubit>(),
       builder: (context, state) {
-        final countries = MainAppCubit.get(context).countriesModel;
+        final countries = di.sl<LocationCubit>().countries;
         return CustomDropdownMenu(
           title: widget.title,
           titleColor: widget.titleColor,
@@ -89,7 +88,6 @@ class _CountryDropDownState extends State<CountryDropDown>
           hintText: widget.hintText,
           value: selectedCity,
           fillColor: widget.fillColor,
-          // border: widget.border,
           validator: (selectedCity) {
             if (selectedCity == null || selectedCity.isEmpty) {
               return 'please_select_country'.tr();

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/components/scaffold/shared_home_scaffold.dart';
 import '../../../../core/enum/enums.dart';
 import '../../../../core/extensions/widgets_extensions.dart';

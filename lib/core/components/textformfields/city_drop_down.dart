@@ -2,7 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eltyp_delivery/core/components/textformfields/custom_dropdown.dart';
-import 'package:eltyp_delivery/core/cubit/app_cubit.dart';
+import 'package:eltyp_delivery/core/cubit/location_cubit.dart';
+import 'package:eltyp_delivery/features/injection_container.dart' as di;
 
 class CityDropDown extends StatefulWidget {
   const CityDropDown({
@@ -39,49 +40,47 @@ class _CityDropDownState extends State<CityDropDown>
   @override
   void initState() {
     super.initState();
-    if (MainAppCubit.get(context).citiesModel.isEmpty) {
-      MainAppCubit.get(context).getCities().then((value) {
-        if (widget.initValue != null) {
-          for (final city in MainAppCubit.get(context).citiesModel) {
-            if (city.id == widget.initValue) {
-              selectedCity = city.name;
-              break;
-            }
-          }
+    final locationCubit = di.sl<LocationCubit>();
+    if (locationCubit.cities.isEmpty) {
+      locationCubit.getCities().then((_) {
+        if (mounted && widget.initValue != null) {
+          _setInitialValue(locationCubit.cities);
         }
       });
     } else {
       if (widget.initValue != null) {
-        for (final city in MainAppCubit.get(context).citiesModel) {
-          if (city.id == widget.initValue) {
-            selectedCity = city.name;
-            break;
-          }
-        }
+        _setInitialValue(locationCubit.cities);
       }
     }
-    // selectedCity ??= MainAppCubit.get(context).citiesModel.first.name;
+  }
+
+  void _setInitialValue(List cities) {
+    for (final city in cities) {
+      if (city.id == widget.initValue) {
+        setState(() {
+          selectedCity = city.name;
+        });
+        break;
+      }
+    }
   }
 
   @override
   void didUpdateWidget(covariant CityDropDown oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initValue != oldWidget.initValue && widget.initValue != null) {
-      for (final city in MainAppCubit.get(context).citiesModel) {
-        if (city.id == widget.initValue) {
-          selectedCity = city.name;
-          break;
-        }
-      }
+      final locationCubit = di.sl<LocationCubit>();
+      _setInitialValue(locationCubit.cities);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocBuilder<MainAppCubit, MainAppCubitState>(
+    return BlocBuilder<LocationCubit, LocationState>(
+      bloc: di.sl<LocationCubit>(),
       builder: (context, state) {
-        final cities = MainAppCubit.get(context).citiesModel;
+        final cities = di.sl<LocationCubit>().cities;
         return CustomDropdownMenu(
           title: widget.title,
           titleColor: widget.titleColor,
@@ -89,7 +88,6 @@ class _CityDropDownState extends State<CityDropDown>
           hintText: widget.hintText,
           value: selectedCity,
           fillColor: widget.fillColor,
-          // border: widget.border,
           validator: (selectedCity) {
             if (selectedCity == null || selectedCity.isEmpty) {
               return 'please_select_city'.tr();

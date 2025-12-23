@@ -4,7 +4,7 @@ import 'package:eltyp_delivery/core/components/utils/close_keyboard.dart';
 import 'package:eltyp_delivery/core/extensions/navigation_extensions.dart';
 import 'package:eltyp_delivery/core/services/notifications_handler/firebase_notification_handler_plus.dart';
 import 'package:eltyp_delivery/core/utils/delay_login.dart';
-import 'package:eltyp_delivery/core/utils/most_used_functions.dart';
+import 'package:eltyp_delivery/core/services/firebase_topic_service.dart';
 import 'package:eltyp_delivery/core/utils/responsive_helper.dart';
 import 'package:eltyp_delivery/features/home/presentation/bloc/drivers_bloc.dart';
 import 'package:eltyp_delivery/features/home/presentation/bloc/trips_bloc.dart';
@@ -20,7 +20,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'config/themes/dark.dart';
 import 'config/themes/light.dart';
 import 'core/cubit/app_cubit.dart';
-import 'core/utils/app_const.dart';
+import 'core/constants/app_constants.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
         },
 
         onFCMTokenInitialize: (context, token) {
-          MostUsedFunctions.subscribeToTopic();
+          FirebaseTopicService.subscribeToTopic();
         },
 
         child: ScreenUtilInit(
@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
           builder: (context, child) {
             return CloseKeyBoardWidget(
               child: MaterialApp(
-                title: AppConst.appName,
+                title: AppConstants.appName,
                 navigatorKey: NavigatorKey.navigatorKey,
                 localizationsDelegates: context.localizationDelegates,
                 supportedLocales: context.supportedLocales,

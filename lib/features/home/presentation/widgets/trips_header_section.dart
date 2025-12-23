@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
+import '../../../../core/components/utils/custom_rounded_container.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../config/themes/colors.dart';
 import '../../../../config/themes/styles.dart';
-import '../../../../core/components/utils/custom_rounded_container.dart';
 import '../../../../core/utils/app_sizes.dart';
+import 'package:flutter/material.dart';
 
 class TripsHeaderSection extends StatelessWidget {
   const TripsHeaderSection({super.key});

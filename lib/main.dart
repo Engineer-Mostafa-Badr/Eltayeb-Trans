@@ -5,7 +5,6 @@ import 'package:eltyp_delivery/core/cubit/app_cubit.dart';
 import 'package:eltyp_delivery/core/storage/main_hive_box.dart';
 import 'package:eltyp_delivery/core/storage/secure_boot.dart';
 import 'package:eltyp_delivery/core/utils/app_const.dart';
-import 'package:eltyp_delivery/features/auth/presentation/pages/login_page.dart';
 import 'package:eltyp_delivery/features/injection_container.dart' as di;
 import 'package:eltyp_delivery/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:eltyp_delivery/my_app.dart';
@@ -18,13 +17,13 @@ import 'features/auth/presentation/pages/login_representative_page.dart';
 import 'features/home/presentation/pages/trip_representative_page.dart';
 
 /// Global variable to hold the initial screen widget
-Widget appStartScreen = const LoginPage();
+Widget appStartScreen = const LoginRepresentativePage();
 
 /// Determines and sets the initial screen based on app state
 /// Checks onboarding status, login status, and user verification
 Future<void> startScreen() async {
   // Initialize app state
-  di.sl<MainAppCubit>().isDark = await di.sl<MainSecureStorage>().getIsDark();
+  await di.sl<MainAppCubit>().initializeTheme();
   final bool isLoggedIn = await di.sl<MainSecureStorage>().getIsLoggedIn();
   final bool isFirstTime = await di
       .sl<MainSecureStorage>()

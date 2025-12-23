@@ -5,6 +5,7 @@ import 'package:eltyp_delivery/config/themes/colors.dart';
 import 'package:eltyp_delivery/config/themes/styles.dart';
 import 'package:eltyp_delivery/core/components/images/avatar_with_edit_icon.dart';
 import 'package:eltyp_delivery/core/components/utils/widgets.dart';
+import 'package:eltyp_delivery/core/components/widgets/custom_app_bar.dart';
 import 'package:eltyp_delivery/core/extensions/navigation_extensions.dart';
 import 'package:eltyp_delivery/core/extensions/shared_extensions.dart';
 import 'package:eltyp_delivery/core/extensions/widgets_extensions.dart';
@@ -26,11 +27,10 @@ class SharedHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         final userModel = state.getProfileResponse.data;
-        return AppBar(
+        return CustomAppBar(
           backgroundColor: Colors.transparent,
-          leadingWidth: showBackButton && Navigator.canPop(context)
-              ? null
-              : 200.w,
+          elevation: 0,
+          toolbarHeight: kToolbarHeight.h,
           leading: showBackButton && Navigator.canPop(context)
               ? IconButton(
                   onPressed: () {
@@ -40,46 +40,39 @@ class SharedHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   icon: const AssetSvgImage(AssetImagesPath.backButtonSVG),
                 )
-              : Row(
-                  children: [
-                    AppPadding.mediumPadding.sizedWidth,
-                    AvatarWithEditIcon(
-                      imageUrl: AppConst.user?.image ?? userModel?.image,
-                      containerSize: 46,
-                      imageSize: 42,
-                      padding: 4,
-                      borderColor: AppColors.cPrimary,
-                    ).addAction(
-                      borderRadius: 100,
-                      onTap: () {
-                        context.navigateToPage(const ProfilePage());
-                      },
-                    ),
-                    AppPadding.mediumPadding.sizedWidth,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Text(
-                        //   'welcome'.isNowPM ? 'good_evening' : 'good_morning',
-                        //   overflow: TextOverflow.ellipsis,
-                        //   maxLines: 1,
-                        //   style: AppStyles.title400.copyWith(
-                        //     fontSize: AppFontSize.f13,
-                        //   ),
-                        // ).tr(),
-                        Text(
-                          // 'Welcome back',
-                          (AppConst.user?.name ?? notSpecified).getFirstNWords(
-                            2,
+              : Padding(
+                  padding: EdgeInsets.only(right: AppPadding.mediumPadding.w),
+                  child: Row(
+                    children: [
+                      AvatarWithEditIcon(
+                        imageUrl: AppConst.user?.image ?? userModel?.image,
+                        containerSize: 46,
+                        imageSize: 42,
+                        padding: 4,
+                        borderColor: AppColors.cPrimary,
+                      ).addAction(
+                        borderRadius: 100,
+                        onTap: () {
+                          context.navigateToPage(const ProfilePage());
+                        },
+                      ),
+                      AppPadding.mediumPadding.sizedWidth,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            (AppConst.user?.name ?? notSpecified).getFirstNWords(
+                              2,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppStyles.title500,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: AppStyles.title500,
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
           actions: [
             BlocBuilder<TripsBloc, TripsState>(

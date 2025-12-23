@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/components/widgets/custom_text_field.dart';
 
 class EditableInfoCard extends StatelessWidget {
   const EditableInfoCard({super.key});
@@ -17,13 +18,10 @@ class EditableInfoCard extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'رقم الموبايل',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
+            CustomTextField(
+              labelText: 'رقم الموبايل',
+              keyboardType: TextInputType.phone,
+              borderRadius: 12,
             ),
             const SizedBox(height: 12),
             OutlinedButton(

@@ -77,35 +77,91 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     emit(state.copyWith(representativeLoginRequestState: RequestState.loading));
     final result = await loginRepresentativeUseCase(event.parameters);
+
+    // Check if emit is still valid after async operation
+    if (emit.isDone) {
+      debugPrint('Emitter is done after use case, cannot emit state');
+      return;
+    }
+
+    // Process result outside fold callback to allow await
+    BaseResponse<LoginResponseModel>? successData;
+    String? errorMessage;
+
     result.fold(
       (failure) {
-        if (!emit.isDone) {
-          emit(
-            state.copyWith(
-              representativeLoginRequestState: RequestState.error,
-              representativeLoginResponse: BaseResponse<LoginResponseModel>(
-                status: false,
-                msg: failure.message,
-              ),
-            ),
-          );
-        }
+        errorMessage = failure.message;
       },
-      (data) async {
-        if (data.data != null && data.data is LoginResponseModel) {
-          await sl<MainSecureStorage>().login(data.data as LoginResponseModel);
-        }
-        if (!emit.isDone) {
-          emit(
-            state.copyWith(
-              representativeLoginRequestState: RequestState.loaded,
-              representativeLoginResponse:
-                  data as BaseResponse<LoginResponseModel>,
-            ),
-          );
-        }
+      (data) {
+        successData = data as BaseResponse<LoginResponseModel>;
       },
     );
+
+    // Handle error case
+    if (errorMessage != null) {
+      if (!emit.isDone) {
+        emit(
+          state.copyWith(
+            representativeLoginRequestState: RequestState.error,
+            representativeLoginResponse: BaseResponse<LoginResponseModel>(
+              status: false,
+              msg: errorMessage,
+            ),
+          ),
+        );
+      }
+      return;
+    }
+
+    // Handle success case
+    if (successData != null) {
+      final data = successData!;
+      debugPrint('LoginRepresentative success - status: ${data.status}');
+      debugPrint('LoginRepresentative success - data: ${data.data != null}');
+      debugPrint('LoginRepresentative success - msg: ${data.msg}');
+
+      // Save login data if status is true and data exists
+      if (data.status == true &&
+          data.data != null &&
+          data.data is LoginResponseModel) {
+        debugPrint('Saving login data to storage');
+        try {
+          await sl<MainSecureStorage>().login(data.data!);
+          debugPrint('Login data saved successfully');
+        } catch (e, stackTrace) {
+          debugPrint('Error saving login data: $e');
+          debugPrint('Stack trace: $stackTrace');
+          if (!emit.isDone) {
+            emit(
+              state.copyWith(
+                representativeLoginRequestState: RequestState.error,
+                representativeLoginResponse:
+                    const BaseResponse<LoginResponseModel>(
+                      status: false,
+                      msg: 'حدث خطأ أثناء حفظ بيانات تسجيل الدخول',
+                    ),
+              ),
+            );
+          }
+          return;
+        }
+      }
+
+      // Check if emit is still valid after async operation
+      if (emit.isDone) {
+        debugPrint('Emitter is done after storage save, cannot emit state');
+        return;
+      }
+
+      debugPrint('Emitting loaded state');
+      emit(
+        state.copyWith(
+          representativeLoginRequestState: RequestState.loaded,
+          representativeLoginResponse: data,
+        ),
+      );
+      debugPrint('State emitted successfully');
+    }
   }
 
   FutureOr<void> _startLogout(

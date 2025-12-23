@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:eltyp_delivery/core/components/images/custom_asset_svg_image.dart';
+import 'package:eltyp_delivery/core/components/widgets/custom_text_field.dart';
 import 'package:eltyp_delivery/core/res/app_images.dart';
 import 'package:eltyp_delivery/core/utils/app_sizes.dart';
 
@@ -25,24 +26,26 @@ class LoginPhoneFieldSection extends StatelessWidget {
           CustomAssetSvgImage(AssetImagesPath.callSvg, height: 45.h),
           const SizedBox(width: 8),
           Expanded(
-            child: TextField(
+            child: CustomTextField(
               controller: controller,
+              hintText: '1273747262',
               keyboardType: TextInputType.phone,
               textAlign: TextAlign.left,
+              textDirection: TextDirection.ltr,
               style: AppStyles.title500,
-
-              decoration: InputDecoration(
-                hintText: '1273747262',
-                hintStyle: AppStyles.subtitle400.copyWith(fontSize: AppFontSize.f14),
-                border: InputBorder.none,
-                fillColor: Colors.white,
-              ),
+              fillColor: Colors.transparent,
+              borderColor: Colors.transparent,
+              focusedBorderColor: Colors.transparent,
+              contentPadding: EdgeInsets.zero,
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 6),
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-            child: Text('20+', style: AppStyles.title500.copyWith(fontSize: AppFontSize.f16)),
+            child: Text(
+              '20+',
+              style: AppStyles.title500.copyWith(fontSize: AppFontSize.f16),
+            ),
           ),
           const SizedBox(width: 8),
         ],

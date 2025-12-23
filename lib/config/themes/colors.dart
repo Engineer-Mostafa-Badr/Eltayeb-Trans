@@ -99,4 +99,21 @@ class AppColors {
   static const cBackgroundLight = Color(0xFFF7F7F7);
   static const cPrimaryDark = Color(0xFF7A0000);
   static const cEmptyText = Color(0xFF8F8E71);
+
+  /// Custody record page colors
+  static const cCustodyPrimaryRed = Color(0xFF560000);
+  static const cCustodyTextRed = Color(0xFF6D1B1B);
+  static const cCustodyTextDarkBlue = Color(0xFF101828);
+  static const cCustodyTextGray = Color(0xFF667085);
+  static const cCustodyBorderGray = Color(0xFFEAECF0);
+  static const cCustodyIconGray = Color(0xFF98A2B3);
+  static const cCustodyBackground = Color(0xFFF9FAFB);
+  static const cCustodyButtonBg = Color(0xFFF2F4F7);
+
+  /// Hardcoded colors found in code - moved to AppColors
+  static const cTruckDetailsBackground = Color(0xFFF9F9F9);
+  static const cTruckDetailsButton = Color(0xFF680006);
+  static const cChangeDriverButton = Color(0xFF5D0000);
+  static const cDarkBlueText = Color(0xFF0D1B4C);
+  static const cFilterStatusRed = Color(0xFF6B1D1D);
 }

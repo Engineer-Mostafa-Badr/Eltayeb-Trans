@@ -3,8 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../config/themes/colors.dart';
 import '../../../../config/themes/styles.dart';
+import '../../../../core/extensions/widgets_extensions.dart';
 import '../../../../core/utils/app_sizes.dart';
 
+/// A progress indicator widget showing trip stages: Created, On Road, Delivered
 class TripProgressSection extends StatelessWidget {
   final bool createdActive;
   final bool onRoadActive;
@@ -19,93 +21,86 @@ class TripProgressSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool lineCreatedOnRoadActive = createdActive && onRoadActive;
-    final bool lineOnRoadDeliveredActive = onRoadActive && deliveredActive;
+    final stages = [
+      _ProgressStage(label: 'تم الإنشاء', isActive: createdActive),
+      _ProgressStage(
+        label: 'في الطريق',
+        isActive: onRoadActive,
+        isLineActive: createdActive && onRoadActive,
+      ),
+      _ProgressStage(
+        label: 'تم التوصيل',
+        isActive: deliveredActive,
+        isLineActive: onRoadActive && deliveredActive,
+      ),
+    ];
 
     return Column(
       children: [
-        TripProgressCirclesRow(
-          createdActive: createdActive,
-          onRoadActive: onRoadActive,
-          deliveredActive: deliveredActive,
-          lineCreatedOnRoadActive: lineCreatedOnRoadActive,
-          lineOnRoadDeliveredActive: lineOnRoadDeliveredActive,
-        ),
-        SizedBox(height: 4.h),
-        TripProgressLabelsRow(
-          createdActive: createdActive,
-          onRoadActive: onRoadActive,
-          deliveredActive: deliveredActive,
-        ),
+        _ProgressIndicatorRow(stages: stages),
+        4.sizedHeight,
+        _ProgressLabelsRow(stages: stages),
       ],
     );
   }
 }
 
-class TripProgressCirclesRow extends StatelessWidget {
-  final bool createdActive;
-  final bool onRoadActive;
-  final bool deliveredActive;
-  final bool lineCreatedOnRoadActive;
-  final bool lineOnRoadDeliveredActive;
+class _ProgressStage {
+  final String label;
+  final bool isActive;
+  final bool isLineActive;
 
-  const TripProgressCirclesRow({
-    super.key,
-    required this.createdActive,
-    required this.onRoadActive,
-    required this.deliveredActive,
-    required this.lineCreatedOnRoadActive,
-    required this.lineOnRoadDeliveredActive,
+  const _ProgressStage({
+    required this.label,
+    required this.isActive,
+    this.isLineActive = false,
   });
+}
+
+class _ProgressIndicatorRow extends StatelessWidget {
+  final List<_ProgressStage> stages;
+
+  const _ProgressIndicatorRow({required this.stages});
 
   @override
   Widget build(BuildContext context) {
-    const Color activeColor = AppColors.cSuccess;
-    const Color inactiveColor = AppColors.cPinColor;
-
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppPadding.padding12),
+      padding: EdgeInsets.symmetric(horizontal: AppPadding.padding12.w),
       child: Row(
         children: [
-          TripProgressCircle(isActive: createdActive),
-          Expanded(
-            child: Container(
-              height: 3.h,
-              color: lineCreatedOnRoadActive ? activeColor : inactiveColor,
-            ),
-          ),
-          TripProgressCircle(isActive: onRoadActive),
-          Expanded(
-            child: Container(
-              height: 3.h,
-              color: lineOnRoadDeliveredActive ? activeColor : inactiveColor,
-            ),
-          ),
-          TripProgressCircle(isActive: deliveredActive),
+          for (int i = 0; i < stages.length; i++) ...[
+            _ProgressCircle(isActive: stages[i].isActive),
+            if (i < stages.length - 1)
+              Expanded(
+                child: Container(
+                  height: 3.h,
+                  color: stages[i].isLineActive
+                      ? AppColors.cSuccess
+                      : AppColors.cPinColor,
+                ),
+              ),
+          ],
         ],
       ),
     );
   }
 }
 
-class TripProgressCircle extends StatelessWidget {
+class _ProgressCircle extends StatelessWidget {
   final bool isActive;
 
-  const TripProgressCircle({super.key, required this.isActive});
+  const _ProgressCircle({required this.isActive});
 
   @override
   Widget build(BuildContext context) {
-    const Color activeColor = AppColors.cSuccess;
-    const Color inactiveColor = AppColors.cFillBorderLight;
-
     return Container(
       width: 24.w,
       height: 24.w,
       decoration: BoxDecoration(
-        color: isActive ? activeColor : Colors.white,
+        color: isActive ? AppColors.cSuccess : Colors.white,
         shape: BoxShape.circle,
         border: Border.all(
-          color: isActive ? activeColor : inactiveColor,
+          color: isActive ? AppColors.cSuccess : AppColors.cFillBorderLight,
           width: 2,
         ),
       ),
@@ -116,65 +111,32 @@ class TripProgressCircle extends StatelessWidget {
   }
 }
 
-class TripProgressLabelsRow extends StatelessWidget {
-  final bool createdActive;
-  final bool onRoadActive;
-  final bool deliveredActive;
+class _ProgressLabelsRow extends StatelessWidget {
+  final List<_ProgressStage> stages;
 
-  const TripProgressLabelsRow({
-    super.key,
-    required this.createdActive,
-    required this.onRoadActive,
-    required this.deliveredActive,
-  });
+  const _ProgressLabelsRow({required this.stages});
 
   @override
   Widget build(BuildContext context) {
-    const Color activeColor = AppColors.cSuccess;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Center(
-            child: Text(
-              'تم الإنشاء',
-              style: AppStyles.subtitle400.copyWith(
-                color: createdActive
-                    ? activeColor
-                    : AppColors.cTextSubtitleLight,
-                fontSize: AppFontSize.f11,
+      children: stages
+          .map(
+            (stage) => Expanded(
+              child: Center(
+                child: Text(
+                  stage.label,
+                  style: AppStyles.subtitle400.copyWith(
+                    color: stage.isActive
+                        ? AppColors.cSuccess
+                        : AppColors.cTextSubtitleLight,
+                    fontSize: AppFontSize.f11,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: Text(
-              'في الطريق',
-              style: AppStyles.subtitle400.copyWith(
-                color: onRoadActive
-                    ? activeColor
-                    : AppColors.cTextSubtitleLight,
-                fontSize: AppFontSize.f11,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: Text(
-              'تم التوصيل',
-              style: AppStyles.subtitle400.copyWith(
-                color: deliveredActive
-                    ? activeColor
-                    : AppColors.cTextSubtitleLight,
-                fontSize: AppFontSize.f11,
-              ),
-            ),
-          ),
-        ),
-      ],
+          )
+          .toList(),
     );
   }
 }

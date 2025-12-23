@@ -1,2 +1,16 @@
 {
+  "all": "All",
+  "scheduled": "Scheduled",
+  "in_progress": "In Progress",
+  "completed": "Completed",
+  "cancelled": "Cancelled",
+  "search_trip": "Search for a trip",
+  "retry": "Retry",
+  "confirm_truck_change": "Confirm Truck Change",
+  "confirm_driver_change": "Confirm Driver Change",
+  "add_custody": "Add Custody",
+  "error_loading_trucks": "Error loading trucks",
+  "error_loading_drivers": "Error loading drivers",
+  "no_trucks_available": "No trucks available",
+  "no_drivers_available": "No drivers available"
 }
