@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../config/themes/colors.dart';
 import '../../../../../core/components/widgets/custom_bottom_navigation_bar.dart';
@@ -29,7 +28,6 @@ class TripDetailsBottomNav extends StatelessWidget {
             context.navigateToPage(const ProfileRepresentativePage());
           }
         },
-        type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
         selectedItemColor: AppColors.cPrimary,
         unselectedItemColor: AppColors.cTextSubtitleLight,

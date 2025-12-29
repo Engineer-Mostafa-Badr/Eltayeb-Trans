@@ -29,7 +29,6 @@ class SharedHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         final userModel = state.getProfileResponse.data;
         return CustomAppBar(
           backgroundColor: Colors.transparent,
-          elevation: 0,
           toolbarHeight: kToolbarHeight.h,
           leading: showBackButton && Navigator.canPop(context)
               ? IconButton(
@@ -62,9 +61,8 @@ class SharedHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            (AppConst.user?.name ?? notSpecified).getFirstNWords(
-                              2,
-                            ),
+                            (AppConst.user?.name ?? notSpecified)
+                                .getFirstNWords(2),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: AppStyles.title500,

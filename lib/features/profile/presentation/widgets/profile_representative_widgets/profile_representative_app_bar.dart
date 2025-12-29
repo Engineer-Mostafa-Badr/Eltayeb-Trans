@@ -6,16 +6,15 @@ import '../../../../../core/components/widgets/custom_app_bar.dart';
 import '../../../../../core/extensions/widgets_extensions.dart';
 import '../../../../../core/utils/app_sizes.dart';
 
-class ProfileRepresentativeAppBar extends StatelessWidget implements PreferredSizeWidget {
+class ProfileRepresentativeAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   const ProfileRepresentativeAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomAppBar(
       backgroundColor: AppColors.greyF9Color,
-      elevation: 0,
       centerTitle: true,
-      toolbarHeight: kToolbarHeight,
       leading: Padding(
         padding: EdgeInsets.only(right: AppPadding.padding12.w),
         child: Row(
@@ -63,11 +62,7 @@ class ProfileRepresentativeAppBar extends StatelessWidget implements PreferredSi
         border: Border.all(color: Colors.grey.shade200),
       ),
       child: IconButton(
-        icon: Icon(
-          icon,
-          color: color ?? AppColors.cDarkBlueColor,
-          size: 20,
-        ),
+        icon: Icon(icon, color: color ?? AppColors.cDarkBlueColor, size: 20),
         onPressed: onPressed,
         padding: EdgeInsets.zero,
         constraints: const BoxConstraints(),
@@ -106,4 +101,3 @@ class ProfileRepresentativeAppBar extends StatelessWidget implements PreferredSi
   @override
   Size get preferredSize => Size.fromHeight(kToolbarHeight.h);
 }
-

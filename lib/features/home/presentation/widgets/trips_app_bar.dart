@@ -23,8 +23,6 @@ class _TripsAppBarState extends State<TripsAppBar> {
   @override
   Widget build(BuildContext context) {
     return CustomAppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
       toolbarHeight: 72.h,
       flexibleSpace: Container(
         decoration: BoxDecoration(

@@ -71,7 +71,7 @@ class _TripFilterAndSearchSectionState
                               Navigator.pop(context);
                             },
                             trailing: widget.selectedStatus == statusMap[status]
-                                ? Icon(
+                                ? const Icon(
                                     Icons.check,
                                     color: AppColors.cFilterStatusRed,
                                   )
@@ -117,7 +117,7 @@ class _TripFilterAndSearchSectionState
                           ),
                         ),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.keyboard_arrow_down,
                         color: AppColors.cFilterStatusRed,
                         size: 20,
@@ -142,7 +142,7 @@ class _TripFilterAndSearchSectionState
                 ],
               ),
               child: IconButton(
-                icon: Icon(Icons.calendar_today_outlined, size: 20),
+                icon: const Icon(Icons.calendar_today_outlined, size: 20),
                 color: AppColors.cFilterStatusRed,
                 onPressed: () async {
                   final DateTimeRange? picked = await showDateRangePicker(

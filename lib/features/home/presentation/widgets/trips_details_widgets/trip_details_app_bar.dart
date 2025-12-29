@@ -12,8 +12,6 @@ class TripDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return CustomAppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
       centerTitle: true,
       leading: Directionality(
         textDirection: ui.TextDirection.ltr,

@@ -3,16 +3,14 @@ import 'package:eltyp_delivery/core/components/widgets/custom_app_bar.dart';
 import 'package:eltyp_delivery/core/res/app_images.dart';
 import 'package:flutter/material.dart';
 
-class TruckDetailsAppBar extends StatelessWidget implements PreferredSizeWidget {
+class TruckDetailsAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   const TruckDetailsAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomAppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
       centerTitle: true,
-      toolbarHeight: kToolbarHeight,
       leading: Directionality(
         textDirection: TextDirection.ltr,
         child: Container(
@@ -89,4 +87,3 @@ class TruckDetailsAppBar extends StatelessWidget implements PreferredSizeWidget 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
-

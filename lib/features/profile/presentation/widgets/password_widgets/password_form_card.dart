@@ -77,7 +77,6 @@ class PasswordFormCard extends StatelessWidget {
           labelText: label,
           textAlign: TextAlign.right,
           textDirection: TextDirection.rtl,
-          fillColor: Colors.white,
           borderColor: Colors.grey.shade300,
           focusedBorderColor: AppColors.cPrimary,
           borderRadius: AppBorderRadius.radius12,

@@ -46,7 +46,7 @@ class PasswordTipsCard extends StatelessWidget {
           Container(
             width: 4,
             height: 4,
-            decoration: BoxDecoration(color: AppColors.cPrimary),
+            decoration: const BoxDecoration(color: AppColors.cPrimary),
           ),
           AppPadding.padding10.sizedWidth,
           Expanded(

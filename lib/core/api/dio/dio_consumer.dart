@@ -68,7 +68,7 @@ class DioConsumer extends ApiConsumer {
       throw await _handleDioError(error);
     }
   }
-
+ 
   @override
   Future<Response> post(
     String path, {

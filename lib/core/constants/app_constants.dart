@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 
 /// Application-wide constants
 class AppConstants {
@@ -28,4 +27,3 @@ class AppConstants {
   // ========== Date Format ==========
   static DateFormat get mostUsedDateFormat => DateFormat('yyyy-MM-dd', 'en_US');
 }
-

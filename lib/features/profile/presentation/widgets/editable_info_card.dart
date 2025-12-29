@@ -18,7 +18,7 @@ class EditableInfoCard extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-            CustomTextField(
+            const CustomTextField(
               labelText: 'رقم الموبايل',
               keyboardType: TextInputType.phone,
               borderRadius: 12,

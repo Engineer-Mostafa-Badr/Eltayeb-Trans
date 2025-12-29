@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:eltyp_delivery/config/themes/styles.dart';
 import 'package:eltyp_delivery/core/components/widgets/custom_app_bar.dart';
 import 'package:eltyp_delivery/core/utils/app_sizes.dart';
-import 'package:eltyp_delivery/core/res/app_images.dart'; 
+import 'package:eltyp_delivery/core/res/app_images.dart';
 import 'package:flutter/material.dart';
 
 class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -33,7 +33,6 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
             : null,
       ),
       child: CustomAppBar(
-        elevation: 0,
         toolbarHeight: appBarHeight.h,
         backgroundColor: Colors.transparent,
         leading: showBackButton
@@ -43,22 +42,19 @@ class SharedAppBar extends StatelessWidget implements PreferredSizeWidget {
               )
             : null,
         title: Padding(
-          padding: EdgeInsets.only(
-            right: showBackButton ? 0 : 16.w,
-          ),
+          padding: EdgeInsets.only(right: showBackButton ? 0 : 16.w),
           child: Text(
             title,
             style: AppStyles.title700.copyWith(fontSize: AppFontSize.f20),
           ).tr(),
         ),
-        centerTitle: false,
         actions: actions,
         flexibleSpace: bottomWidget != null
             ? Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 30.h),
-                  child: bottomWidget!,
+                  child: bottomWidget,
                 ),
               )
             : null,

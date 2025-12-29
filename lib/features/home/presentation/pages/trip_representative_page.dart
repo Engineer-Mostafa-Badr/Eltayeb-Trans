@@ -48,7 +48,6 @@ class _TripsRepresentativePageState extends State<TripsRepresentativePage> {
           selectedItemColor: _primaryColor,
           unselectedItemColor: Colors.grey,
           backgroundColor: Colors.white,
-          type: BottomNavigationBarType.fixed,
           items: _navItems
               .map(
                 (item) => BottomNavigationBarItem(

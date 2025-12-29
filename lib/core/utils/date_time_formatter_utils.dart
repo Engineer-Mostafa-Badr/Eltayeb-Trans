@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:intl/intl.dart';
 
 /// Utility class for date and time formatting
 class DateTimeFormatterUtils {
@@ -14,12 +13,11 @@ class DateTimeFormatterUtils {
       final formattedDate = DateFormat('yyyy-MM-dd   hh:mm a', 'en_US')
           .format(parseDate)
           .replaceAllMapped(RegExp(r'\b(AM|PM)\b'), (match) {
-        return match.group(0) == 'AM' ? 'am'.tr() : 'pm'.tr();
-      });
+            return match.group(0) == 'AM' ? 'am'.tr() : 'pm'.tr();
+          });
       return formattedDate;
     } catch (e) {
       return 'not_spiffied'.tr();
     }
   }
 }
-

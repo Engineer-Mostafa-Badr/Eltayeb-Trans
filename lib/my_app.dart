@@ -22,6 +22,8 @@ import 'config/themes/light.dart';
 import 'core/cubit/app_cubit.dart';
 import 'core/constants/app_constants.dart';
 
+typedef Mostafa = int;
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
